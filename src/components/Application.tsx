@@ -31,7 +31,7 @@ export const Application: React.FC<IApplication> = (props: IApplication) => {
 
     return rs;
   }, [restProps]);
-  console.log('checking admin props... ', adminProps);
+  console.log('checking admin props... ', adminProps.loginPage);
    React.useEffect(() => {
     logger.info('Mounted RA application', adminProps);
 
@@ -41,7 +41,7 @@ export const Application: React.FC<IApplication> = (props: IApplication) => {
   }, []); 
 
   return (
-    <Admin {...adminProps}>
+    <Admin {...adminProps} loginPage={restProps.loginPage}>
       {resources.length > 0 &&resources?.map((resource: ResourceProps) => {
         return <Resource key={resource.name} {...resource} />;
       })}

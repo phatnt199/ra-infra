@@ -57892,14 +57892,14 @@ var Application = function (props) {
         }
         return rs;
     }, [restProps]);
-    console.log('checking admin props... ', adminProps);
+    console.log('checking admin props... ', adminProps.loginPage);
     React__default.useEffect(function () {
         logger.info('Mounted RA application', adminProps);
         return function () {
             logger.info('Unmount RA application');
         };
     }, []);
-    return (React__default.createElement(Admin, __assign$C({}, adminProps), resources.length > 0 && (resources === null || resources === void 0 ? void 0 : resources.map(function (resource) {
+    return (React__default.createElement(Admin, __assign$C({}, adminProps, { loginPage: restProps.loginPage }), resources.length > 0 && (resources === null || resources === void 0 ? void 0 : resources.map(function (resource) {
         return React__default.createElement(Resource, __assign$C({ key: resource.name }, resource));
     }))));
 };
