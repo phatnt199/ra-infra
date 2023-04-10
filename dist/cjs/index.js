@@ -57896,11 +57896,12 @@ var getAuthProvider = function (opts) {
 
 var Application = function (props) {
     var resources = props.resources, restProps = __rest$u(props, ["resources"]);
-    // const { logger } = React.useContext(ApplicationContext);
+    var logger = React.useContext(ApplicationContext).logger;
     var adminProps = React.useMemo(function () {
         var urls = restProps.urls, _a = restProps.i18n, i18n = _a === void 0 ? {} : _a, rest = __rest$u(restProps, ["urls", "i18n"]);
         var baseUrl = urls.base, _b = urls.auth, auth = _b === void 0 ? 'login' : _b;
         var rs = __assign$C({ i18nProvider: getI18nProvider({ i18n: i18n }) }, rest);
+        console.log('check auth page', rest.loginPage);
         if (!baseUrl || isEmpty_1(baseUrl)) {
             throw getError({ message: 'Missing urls.base property' });
         }
@@ -57911,16 +57912,16 @@ var Application = function (props) {
         }
         return rs;
     }, [restProps]);
-    /* React.useEffect(() => {
-      logger.info('Mounted RA application');
-  
-      return () => {
-        logger.info('Unmount RA application');
-      };
-    }, []); */
-    return (React.createElement(Admin, __assign$C({}, adminProps), resources === null || resources === void 0 ? void 0 : resources.map(function (resource) {
+    console.log('checking admin props... ', adminProps);
+    React.useEffect(function () {
+        logger.info('Mounted RA application', adminProps);
+        return function () {
+            logger.info('Unmount RA application');
+        };
+    }, []);
+    return (React.createElement(Admin, __assign$C({}, adminProps), resources.length > 0 && (resources === null || resources === void 0 ? void 0 : resources.map(function (resource) {
         return React.createElement(Resource, __assign$C({ key: resource.name }, resource));
-    })));
+    }))));
 };
 
 // -------------------------------------------------------------------------------

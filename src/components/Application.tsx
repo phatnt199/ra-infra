@@ -1,6 +1,6 @@
 import React from 'react';
 import { Admin, AdminProps, Resource, ResourceProps } from 'react-admin';
-import { IApplication } from '../common';
+import { ApplicationContext, IApplication } from '../common';
 import { getAuthProvider, getDataProvider, getI18nProvider } from '../providers';
 import isEmpty from 'lodash/isEmpty';
 import { getError } from '../utilities';
@@ -8,7 +8,7 @@ import { getError } from '../utilities';
 export const Application: React.FC<IApplication> = (props: IApplication) => {
   const { resources, ...restProps } = props;
 
-  // const { logger } = React.useContext(ApplicationContext);
+  const { logger } = React.useContext(ApplicationContext);
 
   const adminProps = React.useMemo(() => {
     const { urls, i18n = {}, ...rest } = restProps;
@@ -17,6 +17,7 @@ export const Application: React.FC<IApplication> = (props: IApplication) => {
       i18nProvider: getI18nProvider({ i18n }),
       ...rest,
     };
+    console.log('check auth page', rest.loginPage)
 
     if (!baseUrl || isEmpty(baseUrl)) {
       throw getError({ message: 'Missing urls.base property' });
@@ -30,18 +31,18 @@ export const Application: React.FC<IApplication> = (props: IApplication) => {
 
     return rs;
   }, [restProps]);
-
-  /* React.useEffect(() => {
-    logger.info('Mounted RA application');
+  console.log('checking admin props... ', adminProps);
+   React.useEffect(() => {
+    logger.info('Mounted RA application', adminProps);
 
     return () => {
       logger.info('Unmount RA application');
     };
-  }, []); */
+  }, []); 
 
   return (
     <Admin {...adminProps}>
-      {resources?.map((resource: ResourceProps) => {
+      {resources.length > 0 &&resources?.map((resource: ResourceProps) => {
         return <Resource key={resource.name} {...resource} />;
       })}
     </Admin>
