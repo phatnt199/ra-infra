@@ -57901,7 +57901,6 @@ var Application = function (props) {
         var urls = restProps.urls, _a = restProps.i18n, i18n = _a === void 0 ? {} : _a, rest = __rest$u(restProps, ["urls", "i18n"]);
         var baseUrl = urls.base, _b = urls.auth, auth = _b === void 0 ? 'login' : _b;
         var rs = __assign$C({ i18nProvider: getI18nProvider({ i18n: i18n }) }, rest);
-        console.log('check auth page', rest.loginPage);
         if (!baseUrl || isEmpty_1(baseUrl)) {
             throw getError({ message: 'Missing urls.base property' });
         }
@@ -57912,7 +57911,6 @@ var Application = function (props) {
         }
         return rs;
     }, [restProps]);
-    console.log('checking admin props... ', adminProps.loginPage);
     React.useEffect(function () {
         logger.info('Mounted RA application', adminProps);
         return function () {

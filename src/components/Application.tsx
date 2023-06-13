@@ -17,7 +17,6 @@ export const Application: React.FC<IApplication> = (props: IApplication) => {
       i18nProvider: getI18nProvider({ i18n }),
       ...rest,
     };
-    console.log('check auth page', rest.loginPage)
 
     if (!baseUrl || isEmpty(baseUrl)) {
       throw getError({ message: 'Missing urls.base property' });
@@ -31,7 +30,6 @@ export const Application: React.FC<IApplication> = (props: IApplication) => {
 
     return rs;
   }, [restProps]);
-  console.log('checking admin props... ', adminProps.loginPage);
    React.useEffect(() => {
     logger.info('Mounted RA application', adminProps);
 
