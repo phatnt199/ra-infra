@@ -57919,5 +57919,5 @@ var Ra = function (props) {
         React__default.createElement(Application, __assign$C({}, props))));
 };
 
-export { Application, ApplicationContext, ApplicationWrapper, AuthProviderGetter, AuthService, Authentication, CREATE$1 as CREATE, DELETE$1 as DELETE, DELETE_MANY$1 as DELETE_MANY, GET_LIST$1 as GET_LIST, GET_MANY$1 as GET_MANY, GET_MANY_REFERENCE$1 as GET_MANY_REFERENCE, GET_ONE$1 as GET_ONE, LbProviderGetter, LocalStorageKeys, Logger, Ra, SEND, UPDATE$1 as UPDATE, UPDATE_MANY$1 as UPDATE_MANY, getAuthProvider, getDataProvider, getI18nProvider };
+export { ApplicationContext, ApplicationWrapper, AuthProviderGetter, AuthService, Authentication, CREATE$1 as CREATE, DELETE$1 as DELETE, DELETE_MANY$1 as DELETE_MANY, GET_LIST$1 as GET_LIST, GET_MANY$1 as GET_MANY, GET_MANY_REFERENCE$1 as GET_MANY_REFERENCE, GET_ONE$1 as GET_ONE, LbProviderGetter, LocalStorageKeys, Logger, Ra, SEND, UPDATE$1 as UPDATE, UPDATE_MANY$1 as UPDATE_MANY, getAuthProvider, getDataProvider, getI18nProvider };
 //# sourceMappingURL=index.js.map

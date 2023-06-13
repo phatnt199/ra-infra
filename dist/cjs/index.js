@@ -57939,7 +57939,6 @@ var Ra = function (props) {
         React.createElement(Application, __assign$C({}, props))));
 };
 
-exports.Application = Application;
 exports.ApplicationContext = ApplicationContext;
 exports.ApplicationWrapper = ApplicationWrapper;
 exports.AuthProviderGetter = AuthProviderGetter;
