@@ -1,4 +1,5 @@
 import { getError } from '@/utilities';
+import dayjs from 'dayjs';
 
 const applicationLogger = console;
 
@@ -22,13 +23,27 @@ export class Logger implements ILogger {
   }
 
   getTimestamp() {
-    return new Date().toISOString();
+    return dayjs().toISOString();
   }
 
-  generateLog(opts: { level: 'INFO' | 'WARN' | 'ERROR'; message: string }) {
+  generateLog(opts: { level: 'INFO' | 'WARN' | 'ERROR'; message: any }) {
     const { level, message } = opts;
     const timestamp = this.getTimestamp();
-    return [`${timestamp} - [${level}]`, message];
+
+    switch (typeof message) {
+      case 'string': {
+        return {
+          message: `[${timestamp} - [${level}] ${message}`,
+          args: [],
+        };
+      }
+      default: {
+        return {
+          message: `[${timestamp} - [${level}]`,
+          args: [message],
+        };
+      }
+    }
   }
 
   info(message: any, ...args: any[]) {
@@ -36,7 +51,8 @@ export class Logger implements ILogger {
       throw getError({ message: '[info] Invalid logger instance!' });
     }
 
-    applicationLogger.info(...this.generateLog({ level: 'INFO', message }), ...args);
+    const generated = this.generateLog({ level: 'INFO', message });
+    applicationLogger.info(generated.message, ...generated.args, ...args);
   }
 
   warn(message: any, ...args: any[]) {
@@ -44,15 +60,16 @@ export class Logger implements ILogger {
       throw getError({ message: '[error] Invalid logger instance!' });
     }
 
-    applicationLogger.warn(...this.generateLog({ level: 'WARN', message }), ...args);
+    const generated = this.generateLog({ level: 'WARN', message });
+    applicationLogger.info(generated.message, ...generated.args, ...args);
   }
 
-  error(...props: any[]) {
+  error(message: any, ...args: any[]) {
     if (!applicationLogger) {
       throw getError({ message: '[error] Invalid logger instance!' });
     }
 
-    console.error(...props);
-    // applicationLogger.error(...this.generateLog({ level: 'ERROR', message }), ...args);
+    const generated = this.generateLog({ level: 'ERROR', message });
+    applicationLogger.info(generated.message, ...generated.args, ...args);
   }
 }
