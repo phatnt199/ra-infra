@@ -1,8 +1,8 @@
 import {
-    CoreBindings,
-    IAuthProviderOptions,
-    IDataProvider,
-    RequestMethods,
+  CoreBindings,
+  IAuthProviderOptions,
+  IDataProvider,
+  RequestMethods,
 } from '@/common';
 import { DefaultAuthService } from '@/services';
 import { inject, ValueOrPromise } from '@loopback/context';
@@ -84,7 +84,7 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
     const user = this.authService.getUser();
     return Promise.resolve({
       id: 0,
-      fullName: 'N/A',
+      fullName: user?.fullName ?? user?.name ?? user?.username,
       username: user?.username ?? '',
     });
   }
