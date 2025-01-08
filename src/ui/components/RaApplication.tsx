@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CoreBindings } from '@/common';
+import { Logger } from '@/helpers';
 import {
   Admin,
   AuthProvider,
@@ -11,8 +12,10 @@ import {
   ResourceProps,
 } from 'react-admin';
 import { Route } from 'react-router-dom';
+import { ApplicationContext } from '../context';
 import { IApplication } from '../types';
 
+// -----------------------------------------------------------------
 export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
   const { context, resources, customRoutes, ...raProps } = props;
 
@@ -29,20 +32,22 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
     );
 
     return { dataProvider, authProvider, i18nProvider, ...raProps };
-  }, [raProps]);
+  }, [context, raProps]);
 
   // -------------------------------------------------------------------------------
   return (
-    <Admin {...adminProps}>
-      {resources?.map((resource: ResourceProps) => {
-        return <Resource key={resource.name} {...resource} />;
-      })}
-
-      <CustomRoutes>
-        {customRoutes?.map(resource => {
-          return <Route key={resource.path} {...resource} />;
+    <ApplicationContext.Provider value={{ context, logger: Logger.getInstance() }}>
+      <Admin {...adminProps}>
+        {resources?.map((resource: ResourceProps) => {
+          return <Resource key={resource.name} {...resource} />;
         })}
-      </CustomRoutes>
-    </Admin>
+
+        <CustomRoutes>
+          {customRoutes?.map(resource => {
+            return <Route key={resource.path} {...resource} />;
+          })}
+        </CustomRoutes>
+      </Admin>
+    </ApplicationContext.Provider>
   );
 };

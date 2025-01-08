@@ -3,12 +3,12 @@ import React from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
 import { NumericFormatProps, PatternFormat } from 'react-number-format';
 
-interface CustomProps {
+interface ICustomProps extends NumericFormatProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
 }
 
-const CustomFormat = React.forwardRef<NumericFormatProps, CustomProps>((props, ref) => {
+const Ref = (props: ICustomProps, ref: React.Ref<any>) => {
   const { onChange, ...other } = props;
 
   return (
@@ -26,7 +26,9 @@ const CustomFormat = React.forwardRef<NumericFormatProps, CustomProps>((props, r
       format="##:##:##"
     />
   );
-});
+};
+
+const TimeCustomFormat = React.forwardRef(Ref);
 
 export const TimeField: React.FC<TextFieldProps> = props => {
   return (
@@ -34,7 +36,7 @@ export const TimeField: React.FC<TextFieldProps> = props => {
       {...props}
       InputProps={{
         ...(props?.InputProps ?? {}),
-        inputComponent: CustomFormat as any,
+        inputComponent: TimeCustomFormat as any,
       }}
     />
   );
