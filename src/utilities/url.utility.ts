@@ -1,6 +1,12 @@
+import { isDefined } from './boolean.utility';
+
 export const stringify = (params: Record<string | symbol, any>) => {
   const normalizedParams: Record<string | symbol, any> = {};
   for (const key in params) {
+    if (!isDefined(params[key])) {
+      continue;
+    }
+
     switch (typeof params[key]) {
       case 'number':
       case 'string': {
