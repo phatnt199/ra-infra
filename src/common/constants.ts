@@ -2,6 +2,7 @@ export class App {
   static readonly TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
   static readonly TIMEZONE_OFFSET = -(new Date().getTimezoneOffset() / 60);
   static readonly DEFAULT_LOCALE = 'en.UTF-8';
+  static readonly DEFAULT_DEBOUNCE_TIME = 500;
 }
 
 //--------------------------------------------------

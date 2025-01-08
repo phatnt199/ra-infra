@@ -21,13 +21,13 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
 
   // -------------------------------------------------------------------------------
   const adminProps = React.useMemo(() => {
-    const dataProvider = context?.getSync<DataProvider>(
+    const dataProvider = context.getSync<DataProvider>(
       CoreBindings.DEFAULT_REST_DATA_PROVIDER,
     );
-    const authProvider = context?.getSync<AuthProvider>(
+    const authProvider = context.getSync<AuthProvider>(
       CoreBindings.DEFAULT_AUTH_PROVIDER,
     );
-    const i18nProvider = context?.getSync<I18nProvider>(
+    const i18nProvider = context.getSync<I18nProvider>(
       CoreBindings.DEFAULT_I18N_PROVIDER,
     );
 
