@@ -35,6 +35,12 @@ export class DefaultAuthService {
   }
 
   cleanUp() {
-    localStorage.removeItem(LocalStorageKeys.KEY_AUTH_TOKEN);
+    Object.keys(localStorage).forEach(key => {
+      if (!key.startsWith('@app/auth/')) {
+        return;
+      }
+
+      localStorage.removeItem(key);
+    });
   }
 }

@@ -1,4 +1,5 @@
 import {
+  AnyType,
   CoreBindings,
   IAuthProviderOptions,
   IDataProvider,
@@ -21,18 +22,15 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
     super();
   }
 
-  login(params: any) {
+  // -------------------------------------------------------------
+  // LOGIN
+  // -------------------------------------------------------------
+  login(params: AnyType) {
     return new Promise((resolve, reject) => {
       this.restDataProvider
         .send({
           resource: this.authProviderOptions.paths?.signIn ?? '/auth/login',
-          params: {
-            method: RequestMethods.POST,
-            body: {
-              identifier: { scheme: 'username', value: params.username },
-              credential: { scheme: 'basic', value: params.password },
-            },
-          },
+          params: { method: RequestMethods.POST, body: params },
         })
         .then(rs => {
           const { userId, token } = rs.data;
@@ -40,67 +38,98 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
           resolve(rs);
         })
         .catch(error => {
-          console.log(error);
+          console.log('[LOGIN]', error);
           reject(error);
         });
     });
   }
 
-  logout(_params: any) {
+  // -------------------------------------------------------------
+  // LOGOUT
+  // -------------------------------------------------------------
+  logout(_params: AnyType) {
     return new Promise<void>(resolve => {
       this.authService.cleanUp();
       resolve();
     });
   }
 
-  checkError(params: any) {
-    const { status } = params;
-    if (status === 401 || status === 403) {
-      // authService.cleanUpAuth();
-      return Promise.reject({ redirectTo: 'login' });
-    }
-
-    return Promise.resolve();
-  }
-
-  async checkAuth(_params: any) {
+  // -------------------------------------------------------------
+  // CHECK_AUTH
+  // -------------------------------------------------------------
+  async checkAuth(_params: AnyType) {
     const token = this.authService.getAuth();
+
     if (!token?.value) {
       return Promise.reject({ redirectTo: 'login' });
     }
 
+    if (!this.authProviderOptions.paths?.checkAuth) {
+      return Promise.resolve();
+    }
+
     const rs = await this.restDataProvider.send({
-      resource: this.authProviderOptions.paths?.checkAuth ?? 'auth/who-am-i',
+      resource: this.authProviderOptions.paths.checkAuth,
       params: { method: RequestMethods.GET },
     });
 
-    if (!rs?.data?.userId) {
+    if (!rs?.data) {
       return Promise.reject({ redirectTo: 'login' });
     }
+
     return await Promise.resolve();
   }
 
-  getIdentity(_params: any) {
-    const user = this.authService.getUser();
-    return Promise.resolve({
-      id: 0,
-      fullName: user?.fullName ?? user?.name ?? user?.username,
-      username: user?.username ?? '',
-    });
-  }
+  // -------------------------------------------------------------
+  // CHECK_ERROR
+  // -------------------------------------------------------------
+  checkError(params: AnyType) {
+    const { status } = params;
 
-  getPermissions(_params: any) {
+    if (status === 401) {
+      this.authService.cleanUp();
+      return Promise.reject({ redirectTo: 'login' });
+    }
+
+    if (status === 403) {
+      return Promise.reject({
+        redirectTo: `/unauthorized`,
+        logoutUser: false,
+      });
+    }
+
     return Promise.resolve();
   }
 
+  // -------------------------------------------------------------
+  // GET_IDENTIFIER
+  // -------------------------------------------------------------
+  getIdentity(_params: AnyType) {
+    const user = this.authService.getUser();
+
+    if (!user?.userId) {
+      return Promise.reject({ message: '[getIdentity] No userId to get user identity!' });
+    }
+
+    return Promise.resolve(user);
+  }
+
+  // -------------------------------------------------------------
+  // GET_PERMISSIONS
+  // -------------------------------------------------------------
+  getPermissions(_params: AnyType) {
+    return Promise.resolve();
+  }
+
+  // -------------------------------------------------------------
   override value(): ValueOrPromise<AuthProvider> {
     return {
-      login: (params: any) => this.login(params),
-      logout: (params: any) => this.logout(params),
-      checkError: (params: any) => this.checkError(params),
-      checkAuth: (params: any) => this.checkAuth(params),
-      getIdentity: (params: any) => this.getIdentity(params),
-      getPermissions: (params: any) => this.getPermissions(params),
+      login: (params: AnyType) => this.login(params),
+      logout: (params: AnyType) => this.logout(params),
+      checkError: (params: AnyType) => this.checkError(params),
+      checkAuth: (params: AnyType) => this.checkAuth(params),
+      getIdentity: (params: AnyType) => this.getIdentity(params),
+      getPermissions: (params: AnyType) => this.getPermissions(params),
     };
   }
 }

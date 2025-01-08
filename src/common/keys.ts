@@ -1,5 +1,5 @@
 export class CoreBindings {
-  static readonly APPLICATION_INSTNACE = '@app/application/instance';
+  static readonly APPLICATION_INSTANCE = '@app/application/instance';
 
   static readonly DEFAULT_AUTH_PROVIDER = '@app/application/auth/default';
   static readonly DEFAULT_I18N_PROVIDER = '@app/application/i18n/default';
@@ -7,6 +7,8 @@ export class CoreBindings {
 
   static readonly AUTH_PROVIDER_OPTIONS = '@app/application/options/auth';
   static readonly DEFAULT_AUTH_SERVICE = '@app/application/service/auth/default';
+
+  static readonly REST_DATA_PROVIDER_OPTIONS = '@app/application/options/rest/data';
 
   static readonly I18N_SOURCES = '@app/application/options/i18n/sources';
 }

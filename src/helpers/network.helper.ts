@@ -1,5 +1,5 @@
-import { AnyObject, RequestMethods, TRequestMethod } from '../common';
-import { stringify } from '../utilities';
+import { AnyObject, RequestMethods, TRequestMethod } from '@/common';
+import { stringify } from '@/utilities';
 import { Logger } from './logger.helper';
 
 const HTTP = 'http';
@@ -43,8 +43,8 @@ export class NetworkHelper {
 
     const { url, method, params, body, headers = {}, configs = {} } = opts;
     const props = {
-      method: method.toString(),
-      body: JSON.stringify(body),
+      method,
+      body: body instanceof FormData ? body : JSON.stringify(body),
       headers,
       ...configs,
     };
@@ -69,62 +69,28 @@ export class NetworkHelper {
   // GET REQUEST
   // -------------------------------------------------------------
   get(opts: IRequestOptions) {
-    const { url, params, configs, ...rest } = opts;
-    return this.send({
-      ...rest,
-      url,
-      method: RequestMethods.GET,
-      params,
-      configs,
-    });
+    return this.send({ ...opts, method: RequestMethods.GET });
   }
 
   // -------------------------------------------------------------
   // POST REQUEST
   // -------------------------------------------------------------
   post(opts: IRequestOptions) {
-    const { url, body, configs, ...rest } = opts;
-    return this.send({
-      ...rest,
-      url,
-      method: RequestMethods.POST,
-      body,
-      configs,
-    });
+    return this.send({ ...opts, method: RequestMethods.POST });
   }
 
   // -------------------------------------------------------------
   put(opts: IRequestOptions) {
-    const { url, body, configs, ...rest } = opts;
-    return this.send({
-      ...rest,
-      url,
-      method: RequestMethods.PUT,
-      body,
-      configs,
-    });
+    return this.send({ ...opts, method: RequestMethods.PUT });
   }
 
   // -------------------------------------------------------------
   patch(opts: IRequestOptions) {
-    const { url, body, configs, ...rest } = opts;
-    return this.send({
-      ...rest,
-      url,
-      method: RequestMethods.PATCH,
-      body,
-      configs,
-    });
+    return this.send({ ...opts, method: RequestMethods.PATCH });
   }
 
   // -------------------------------------------------------------
   delete(opts: IRequestOptions) {
-    const { url, configs, ...rest } = opts;
-    return this.send({
-      ...rest,
-      url,
-      method: RequestMethods.DELETE,
-      configs,
-    });
+    return this.send({ ...opts, method: RequestMethods.DELETE });
   }
 }

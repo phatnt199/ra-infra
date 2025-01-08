@@ -150,18 +150,23 @@ export interface IReactAdminDataProvider {
 }
 
 export interface IDataProvider extends IReactAdminDataProvider {
-  send: (opts: { resource: string; params: ISendParams }) => Promise<AnyType>;
+  send: <ReturnType = AnyType>(opts: {
+    resource: string;
+    params: ISendParams;
+  }) => Promise<{ data: ReturnType }>;
 }
 
 // ----------------------------------------------------------------------
 export interface IAuthProviderOptions {
+  paths?: { signIn?: string; signUp?: string; checkAuth?: string };
+}
+
+// ----------------------------------------------------------------------
+export interface IRestDataProviderOptions {
   url: string;
-  noAuthPaths: Array<string>;
-  paths?: {
-    signIn?: string;
-    signUp?: string;
-    checkAuth?: string;
-  };
+  noAuthPaths?: Array<string>;
+  headers?: HeadersInit;
+  getListVariant?: TGetListVariant;
 }
 
 // ----------------------------------------------------------------------

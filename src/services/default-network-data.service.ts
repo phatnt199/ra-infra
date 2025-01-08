@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import {
+  AnyType,
   App,
   GetListVariants,
   IGetRequestPropsParams,
@@ -26,12 +27,19 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
     baseUrl?: string;
     headers?: HeadersInit;
     noAuthPaths?: string[];
+    getListVariant?: TGetListVariant;
   }) {
-    const { name, baseUrl, headers, noAuthPaths } = opts;
+    const { name, baseUrl, headers, noAuthPaths, getListVariant } = opts;
     super({ name, scope: DefaultNetworkRequestService.name, baseUrl });
 
     this.headers = headers;
     this.noAuthPaths = noAuthPaths;
+    this.getListVariant = getListVariant;
+  }
+
+  //-------------------------------------------------------------
+  getGetListVariant() {
+    return this.getListVariant;
   }
 
   //-------------------------------------------------------------
@@ -47,7 +55,7 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
       });
     }
 
-    return `${authToken?.type || 'Bearer'} ${authToken?.value}`;
+    return `${authToken?.type || 'Bearer'} ${authToken.value}`;
   }
 
   //-------------------------------------------------------------
@@ -62,7 +70,7 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
 
     const defaultHeaders = {
       ['Timezone']: App.TIMEZONE,
-      ['Timezone-Offset']: `${App.TIME_OFFSET}`,
+      ['Timezone-Offset']: `${App.TIMEZONE_OFFSET}`,
       ...this.headers,
     };
 
@@ -103,7 +111,7 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
         break;
       }
       case RequestBodyTypes.FORM_DATA: {
-        rs.headers = { ...headers };
+        rs.headers = headers;
 
         const formData = new FormData();
 
@@ -129,13 +137,10 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
   }
 
   //-------------------------------------------------------------
-  convertResponse<T = any>(opts: {
-    response: {
-      data: T;
-      headers: Record<string, any>;
-    };
+  convertResponse<TData = AnyType>(opts: {
+    response: { data: TData; headers: Record<string, any> };
     type: string;
-  }): { data: T; total?: number } {
+  }): { data: TData; total?: number } {
     const {
       response: { data, headers },
       type,
@@ -159,12 +164,12 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
           }
 
           return {
-            data: _data as T,
+            data: _data as TData,
             total: parseInt(contentRange.split('/').pop(), 10) || _data.length,
           };
         }
 
-        return { data: _data as T };
+        return { data: _data as TData };
       }
       default: {
         return { data };
@@ -173,7 +178,7 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
   }
 
   //-------------------------------------------------------------
-  async doRequest<T = any>(
+  async doRequest<ReturnType = AnyType>(
     opts: IGetRequestPropsResult & {
       baseUrl?: string;
       query?: any;
@@ -181,7 +186,7 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
       method: TRequestMethod;
       paths: string[];
     },
-  ) {
+  ): Promise<{ data: ReturnType; total?: number }> {
     const { baseUrl = this.baseUrl, type, method, paths, body, headers, query } = opts;
 
     if (!baseUrl || isEmpty(baseUrl)) {
@@ -197,25 +202,30 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
       method,
       params: query,
       body: method === RequestMethods.GET ? undefined : body,
-      configs: { headers },
+      headers,
+      configs: {},
     });
 
-    const status = rs.status;
-
     const jsonRs = await rs.json();
+
     if (jsonRs?.error) {
       throw getError(jsonRs?.error);
     }
 
+    const status = rs.status;
+
+    let tempRs: {
+      response: { data: ReturnType; headers: Record<string, any> };
+      type: string;
+    } = {
+      response: { data: {} as ReturnType, headers: rs.headers ?? {} },
+      type,
+    };
+
     switch (status) {
-      case 200: {
-        return this.convertResponse<T>({
-          response: { data: jsonRs, headers: rs.headers },
-          type,
-        });
-      }
       case 204: {
-        return {};
+        tempRs = { ...tempRs, response: { ...tempRs.response, data: {} as ReturnType } };
+        break;
       }
       default: {
         if (
@@ -224,12 +234,25 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
           )
         ) {
           const blob = await rs.blob();
-          return { data: blob, headers: rs.headers ?? {} };
+
+          tempRs = {
+            ...tempRs,
+            response: { ...tempRs.response, data: blob as ReturnType },
+          };
+
+          break;
         }
 
-        console.error('[doRequest] Response: ', rs);
-        throw getError({ message: '[doRequest] Cannot resolve response!' });
+        tempRs = {
+          ...tempRs,
+          response: { ...tempRs.response, data: jsonRs as ReturnType },
+        };
+
+        break;
       }
     }
+
+    const _rs = this.convertResponse<ReturnType>(tempRs);
+    return _rs;
   }
 }

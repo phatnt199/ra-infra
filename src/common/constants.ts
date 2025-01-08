@@ -1,7 +1,10 @@
 export class App {
   static readonly TIME_OFFSET = '+07:00';
-  static readonly TIMEZONE = 'Asia/Ho_Chi_Minh';
+  // static readonly TIMEZONE = 'Asia/Ho_Chi_Minh';
   static readonly DEFAULT_LOCALE = 'en.UTF-8';
+
+  static readonly TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  static readonly TIMEZONE_OFFSET = -(new Date().getTimezoneOffset() / 60);
 }
 
 //--------------------------------------------------

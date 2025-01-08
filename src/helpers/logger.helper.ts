@@ -1,4 +1,4 @@
-import { getError } from '../utilities';
+import { getError } from '@/utilities';
 
 const applicationLogger = console;
 
