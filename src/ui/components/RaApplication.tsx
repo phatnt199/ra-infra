@@ -2,6 +2,7 @@ import React from 'react';
 
 import { CoreBindings } from '@/common';
 import { Logger } from '@/helpers';
+import { Context } from '@loopback/context';
 import {
   Admin,
   AuthProvider,
@@ -11,13 +12,30 @@ import {
   Resource,
   ResourceProps,
 } from 'react-admin';
+import { Provider as ReduxProvider } from 'react-redux';
 import { Route } from 'react-router-dom';
+import { Store } from 'redux';
 import { ApplicationContext } from '../context';
 import { IApplication } from '../types';
 
+const Wrapper: React.FC<{
+  context: Context;
+  reduxStore: Store;
+  suspense: React.ReactNode;
+  children: React.ReactNode;
+}> = ({ context, reduxStore, suspense, children }) => {
+  return (
+    <ApplicationContext.Provider value={{ context, logger: Logger.getInstance() }}>
+      <ReduxProvider store={reduxStore}>
+        <React.Suspense fallback={suspense}>{children}</React.Suspense>
+      </ReduxProvider>
+    </ApplicationContext.Provider>
+  );
+};
+
 // -----------------------------------------------------------------
 export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
-  const { context, resources, customRoutes, ...raProps } = props;
+  const { context, reduxStore, suspense, resources, customRoutes, ...raProps } = props;
 
   // -------------------------------------------------------------------------------
   const adminProps = React.useMemo(() => {
@@ -36,7 +54,7 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
 
   // -------------------------------------------------------------------------------
   return (
-    <ApplicationContext.Provider value={{ context, logger: Logger.getInstance() }}>
+    <Wrapper context={context} reduxStore={reduxStore} suspense={suspense}>
       <Admin {...adminProps}>
         {resources?.map((resource: ResourceProps) => {
           return <Resource key={resource.name} {...resource} />;
@@ -48,6 +66,6 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
           })}
         </CustomRoutes>
       </Admin>
-    </ApplicationContext.Provider>
+    </Wrapper>
   );
 };
