@@ -8,10 +8,12 @@ import {
   RequestMethods,
   RequestTypes,
   TRequestMethod,
+  TRequestType,
 } from '@/common';
 import { DefaultNetworkRequestService } from '@/services';
 import { getError } from '@/utilities';
 import { inject, ValueOrPromise } from '@loopback/context';
+import omit from 'lodash/omit';
 import {
   CreateParams,
   CreateResult,
@@ -36,14 +38,13 @@ import {
   UpdateResult,
 } from 'react-admin';
 import { BaseProvider } from './base.provider';
-import omit from 'lodash/omit';
 
 export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
-  private networkService: DefaultNetworkRequestService;
+  protected networkService: DefaultNetworkRequestService;
 
   constructor(
     @inject(CoreBindings.REST_DATA_PROVIDER_OPTIONS)
-    private restDataProviderOptions: IRestDataProviderOptions,
+    protected restDataProviderOptions: IRestDataProviderOptions,
   ) {
     super();
 
@@ -52,6 +53,27 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       baseUrl: this.restDataProviderOptions.url,
       noAuthPaths: this.restDataProviderOptions.noAuthPaths,
     });
+  }
+
+  //---------------------------------------------------------------------------
+  getListHelper<RecordType extends RaRecord = AnyType>(opts: {
+    resource: string;
+    type: TRequestType;
+    queryKey: Record<string, AnyType>;
+    filter: Record<string, AnyType>;
+    requestProps: { headers?: HeadersInit; body?: AnyType; method: TRequestMethod };
+  }) {
+    const { type, resource, queryKey, filter, requestProps } = opts;
+
+    const paths = [resource];
+    const response = this.networkService.doRequest<RecordType[]>({
+      type,
+      paths,
+      query: { ...queryKey, filter },
+      ...requestProps,
+    });
+
+    return response;
   }
 
   // -------------------------------------------------------------
@@ -130,13 +152,12 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       ...request,
     };
 
-    const paths = [resource];
-
-    const response = this.networkService.doRequest<RecordType[]>({
+    const response = this.getListHelper<RecordType>({
       type: RequestTypes.GET_LIST,
-      paths,
-      query: { ...queryKey, filter },
-      ...requestProps,
+      resource,
+      queryKey,
+      filter,
+      requestProps,
     });
 
     return response;
@@ -288,13 +309,12 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       ...request,
     };
 
-    const paths = [resource];
-
-    const response = this.networkService.doRequest<RecordType[]>({
+    const response = this.getListHelper<RecordType>({
       type: RequestTypes.GET_MANY_REFERENCE,
-      paths,
-      query: { ...queryKey, filter },
-      ...requestProps,
+      resource,
+      queryKey,
+      filter,
+      requestProps,
     });
 
     return response;
