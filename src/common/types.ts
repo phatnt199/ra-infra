@@ -1,11 +1,9 @@
-import { BindingTag, Constructor, DynamicValueProviderClass } from '@loopback/context';
 import {
-  Environments,
-  GetListVariants,
-  RequestBodyTypes,
-  RequestMethods,
-  RequestTypes,
-} from './constants';
+  BindingTag,
+  Constructor,
+  DynamicValueProviderClass,
+  ValueOrPromise,
+} from '@loopback/context';
 import {
   CreateParams,
   CreateResult,
@@ -29,17 +27,21 @@ import {
   UpdateParams,
   UpdateResult,
 } from 'react-admin';
+import {
+  Environments,
+  GetListVariants,
+  RequestBodyTypes,
+  RequestMethods,
+  RequestTypes,
+} from './constants';
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-export type NumberIdType = number;
-export type StringIdType = string;
+//-----------------------------------------------------------
 export type IdType = string | number;
 export type NullableType = undefined | null | void;
 
 export type AnyType = any;
 export type AnyObject = Record<string | symbol | number, any>;
 
-export type ValueOrPromise<T> = T | Promise<T>;
 export type ValueOf<T> = T[keyof T];
 
 export type ValueOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

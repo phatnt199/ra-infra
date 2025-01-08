@@ -6,11 +6,10 @@ import {
   IDataProvider,
   ISendParams,
   RequestTypes,
-  ValueOrPromise,
 } from '@/common';
 import { DefaultNetworkRequestService } from '@/services';
 import { getError } from '@/utilities';
-import { inject } from '@loopback/context';
+import { inject, ValueOrPromise } from '@loopback/context';
 import {
   CreateParams,
   CreateResult,

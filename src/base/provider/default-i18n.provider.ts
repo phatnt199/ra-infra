@@ -1,5 +1,5 @@
-import { CoreBindings, ValueOrPromise } from '@/common';
-import { inject } from '@loopback/context';
+import { CoreBindings } from '@/common';
+import { inject, ValueOrPromise } from '@loopback/context';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { I18nProvider } from 'react-admin';
 import { BaseProvider } from './base.provider';

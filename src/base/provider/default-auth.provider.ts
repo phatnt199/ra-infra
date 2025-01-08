@@ -1,12 +1,11 @@
 import {
-  CoreBindings,
-  IAuthProviderOptions,
-  IDataProvider,
-  RequestMethods,
-  ValueOrPromise,
+    CoreBindings,
+    IAuthProviderOptions,
+    IDataProvider,
+    RequestMethods,
 } from '@/common';
 import { DefaultAuthService } from '@/services';
-import { inject } from '@loopback/context';
+import { inject, ValueOrPromise } from '@loopback/context';
 import { AuthProvider } from 'react-admin';
 import { BaseProvider } from './base.provider';
 
