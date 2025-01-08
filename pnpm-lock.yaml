@@ -14,6 +14,9 @@ importers:
       '@loopback/filter':
         specifier: ^5.0.6
         version: 5.0.8
+      '@mui/icons-material':
+        specifier: ^5.12.3
+        version: 5.16.14(@mui/material@5.16.14(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0))(@types/react@18.3.18)(react@19.0.0))(@types/react@18.3.18)(react-dom@18.3.1(react@19.0.0))(react@19.0.0))(@types/react@18.3.18)(react@19.0.0)
       '@mui/material':
         specifier: ^5.12.3
         version: 5.16.14(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
