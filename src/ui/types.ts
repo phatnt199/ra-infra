@@ -4,6 +4,8 @@ import { Store } from 'redux';
 
 export interface IApplication extends AdminProps {
   context: Context;
+
+  debug?: boolean;
   reduxStore: Store;
   suspense: React.ReactNode;
 

@@ -5,8 +5,8 @@ import { Logger } from '@/helpers';
 
 export const ApplicationContext = React.createContext<{
   context: Context | null;
-  logger: Logger;
+  logger: Logger | null;
 }>({
   context: null,
-  logger: Logger.getInstance(),
+  logger: null,
 });

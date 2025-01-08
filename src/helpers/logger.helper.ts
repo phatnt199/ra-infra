@@ -3,7 +3,9 @@ import dayjs from 'dayjs';
 
 const applicationLogger = console;
 
+export type TLogLevel = 'debug' | 'info' | 'warn' | 'error';
 export interface ILogger {
+  debug(message: string, ...args: any[]): void;
   info(message: string, ...args: any[]): void;
   warn(message: string, ...args: any[]): void;
   error(message: string, ...args: any[]): void;
@@ -11,14 +13,18 @@ export interface ILogger {
 
 export class Logger implements ILogger {
   private static instance: Logger;
+  private isDebugEnabled: boolean;
 
-  constructor() {}
+  constructor(opts?: { debug: boolean }) {
+    this.isDebugEnabled = opts?.debug ?? false;
+  }
 
-  static getInstance(): Logger {
+  static getInstance(opts?: { debug: boolean }): Logger {
     if (!this.instance) {
-      this.instance = new Logger();
+      this.instance = new Logger(opts);
     }
 
+    this.instance.isDebugEnabled = opts?.debug ?? false;
     return this.instance;
   }
 
@@ -26,50 +32,56 @@ export class Logger implements ILogger {
     return dayjs().toISOString();
   }
 
-  generateLog(opts: { level: 'INFO' | 'WARN' | 'ERROR'; message: any }) {
-    const { level, message } = opts;
+  toggleDebug(opts?: { state: boolean }) {
+    this.isDebugEnabled = opts?.state || !this.isDebugEnabled;
+  }
+
+  generateLog(opts: { level: TLogLevel; message: any; args: any[] }) {
+    const { level, message, args } = opts;
     const timestamp = this.getTimestamp();
 
     switch (typeof message) {
       case 'string': {
         return {
           message: `${timestamp} - [${level}] ${message}`,
-          args: [],
+          args,
         };
       }
       default: {
         return {
           message: `${timestamp} - [${level}]`,
-          args: [message],
+          args: [message, ...args],
         };
       }
     }
   }
 
-  info(message: any, ...args: any[]) {
+  private log(level: TLogLevel, message: any, ...args: any[]) {
     if (!applicationLogger) {
       throw getError({ message: '[info] Invalid logger instance!' });
     }
 
-    const generated = this.generateLog({ level: 'INFO', message });
-    applicationLogger.info(generated.message, ...generated.args, ...args);
+    if (level === 'debug' && !this.isDebugEnabled) {
+      return;
+    }
+
+    const generated = this.generateLog({ level, message, args });
+    applicationLogger.info(generated.message, ...generated.args);
+  }
+
+  debug(message: any, ...args: any[]) {
+    this.log('debug', message, ...args);
+  }
+
+  info(message: any, ...args: any[]) {
+    this.log('info', message, ...args);
   }
 
   warn(message: any, ...args: any[]) {
-    if (!applicationLogger) {
-      throw getError({ message: '[error] Invalid logger instance!' });
-    }
-
-    const generated = this.generateLog({ level: 'WARN', message });
-    applicationLogger.info(generated.message, ...generated.args, ...args);
+    this.log('warn', message, ...args);
   }
 
   error(message: any, ...args: any[]) {
-    if (!applicationLogger) {
-      throw getError({ message: '[error] Invalid logger instance!' });
-    }
-
-    const generated = this.generateLog({ level: 'ERROR', message });
-    applicationLogger.info(generated.message, ...generated.args, ...args);
+    this.log('error', message, ...args);
   }
 }

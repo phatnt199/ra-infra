@@ -22,10 +22,13 @@ const Wrapper: React.FC<{
   context: Context;
   reduxStore: Store;
   suspense: React.ReactNode;
+  debug?: boolean;
   children: React.ReactNode;
-}> = ({ context, reduxStore, suspense, children }) => {
+}> = ({ context, reduxStore, suspense, debug = false, children }) => {
   return (
-    <ApplicationContext.Provider value={{ context, logger: Logger.getInstance() }}>
+    <ApplicationContext.Provider
+      value={{ context, logger: Logger.getInstance({ debug }) }}
+    >
       <ReduxProvider store={reduxStore}>
         <React.Suspense fallback={suspense}>{children}</React.Suspense>
       </ReduxProvider>
@@ -35,7 +38,15 @@ const Wrapper: React.FC<{
 
 // -----------------------------------------------------------------
 export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
-  const { context, reduxStore, suspense, resources, customRoutes, ...raProps } = props;
+  const {
+    context,
+    reduxStore,
+    suspense,
+    debug = false,
+    resources,
+    customRoutes,
+    ...raProps
+  } = props;
 
   // -------------------------------------------------------------------------------
   const adminProps = React.useMemo(() => {
@@ -54,7 +65,7 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
 
   // -------------------------------------------------------------------------------
   return (
-    <Wrapper context={context} reduxStore={reduxStore} suspense={suspense}>
+    <Wrapper context={context} reduxStore={reduxStore} suspense={suspense} debug={debug}>
       <Admin {...adminProps}>
         {resources?.map((resource: ResourceProps) => {
           return <Resource key={resource.name} {...resource} />;
