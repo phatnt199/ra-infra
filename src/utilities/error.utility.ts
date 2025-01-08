@@ -30,21 +30,21 @@ export const getError = (opts: {
 
 export const getClientError = (e: unknown) => {
   if (e instanceof ApplicationError) {
-    return {
+    return new ApplicationError({
       messageCode: e?.messageCode ?? e.message,
       message: e.message,
-    };
+    });
   }
 
   if (e instanceof Error) {
-    return {
+    return new ApplicationError({
       messageCode: e.message,
       message: e.message,
-    };
+    });
   }
 
-  return {
+  return new ApplicationError({
     messageCode: `${e}`,
     message: `${e}`,
-  };
+  });
 };

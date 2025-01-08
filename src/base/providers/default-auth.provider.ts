@@ -1,6 +1,7 @@
 import {
   AnyType,
   CoreBindings,
+  IAuthProvider,
   IAuthProviderOptions,
   IDataProvider,
   RequestMethods,
@@ -121,8 +122,15 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
     return Promise.resolve();
   }
 
+  //-------------------------------------------------------------
+  // GET_ROLES
+  //-------------------------------------------------------------
+  getRoles(_params: AnyType) {
+    return Promise.resolve(this.authService.getRoles());
+  }
+
   // -------------------------------------------------------------
-  override value(): ValueOrPromise<AuthProvider> {
+  override value(): ValueOrPromise<IAuthProvider> {
     return {
       login: (params: AnyType) => this.login(params),
       logout: (params: AnyType) => this.logout(params),
@@ -130,6 +138,7 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
       checkAuth: (params: AnyType) => this.checkAuth(params),
       getIdentity: (params: AnyType) => this.getIdentity(params),
       getPermissions: (params: AnyType) => this.getPermissions(params),
+      getRoles: (params: AnyType) => this.getRoles(params),
     };
   }
 }

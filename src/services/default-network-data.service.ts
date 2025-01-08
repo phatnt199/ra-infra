@@ -2,14 +2,12 @@ import isEmpty from 'lodash/isEmpty';
 import {
   AnyType,
   App,
-  GetListVariants,
   IGetRequestPropsParams,
   IGetRequestPropsResult,
   LocalStorageKeys,
   RequestBodyTypes,
   RequestMethods,
   RequestTypes,
-  TGetListVariant,
   TRequestMethod,
   TRequestType,
 } from '../common';
@@ -20,26 +18,18 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
   protected authToken?: { type?: string; value: string };
   protected noAuthPaths?: string[];
   protected headers?: HeadersInit;
-  protected getListVariant?: TGetListVariant;
 
   constructor(opts: {
     name: string;
     baseUrl?: string;
     headers?: HeadersInit;
     noAuthPaths?: string[];
-    getListVariant?: TGetListVariant;
   }) {
-    const { name, baseUrl, headers, noAuthPaths, getListVariant } = opts;
+    const { name, baseUrl, headers, noAuthPaths } = opts;
     super({ name, scope: DefaultNetworkRequestService.name, baseUrl });
 
     this.headers = headers;
     this.noAuthPaths = noAuthPaths;
-    this.getListVariant = getListVariant;
-  }
-
-  //-------------------------------------------------------------
-  getGetListVariant() {
-    return this.getListVariant;
   }
 
   //-------------------------------------------------------------
@@ -151,25 +141,16 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
       case RequestTypes.GET_MANY_REFERENCE: {
         const _data = !Array.isArray(data) ? [data] : data;
 
-        if (this.getListVariant === GetListVariants.CONTENT_RANGE) {
-          // content-range: <unit> <range-start>-<range-end>/<size>
-          const contentRange =
-            headers?.get('content-range') || headers?.get['Content-Range'];
+        // content-range: <unit> <range-start>-<range-end>/<size>
+        // TODO: Handle content range not use `getListVariant`
+        const contentRange =
+          (headers?.get('content-range') || headers?.get['Content-Range']) ??
+          _data.length;
 
-          if (!contentRange) {
-            throw getError({
-              message:
-                'Missing "Content-Range" header in the HTTP Response. The REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. In case CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?',
-            });
-          }
-
-          return {
-            data: _data as TData,
-            total: parseInt(contentRange.split('/').pop(), 10) || _data.length,
-          };
-        }
-
-        return { data: _data as TData };
+        return {
+          data: _data as TData,
+          total: parseInt(contentRange.split('/').pop(), 10),
+        };
       }
       default: {
         return { data };
@@ -208,11 +189,11 @@ export class DefaultNetworkRequestService extends BaseNetworkRequestService {
 
     const jsonRs = await rs.json();
 
-    if (jsonRs?.error) {
+    const status = rs.status;
+
+    if (status < 200 || status >= 300) {
       throw getError(jsonRs?.error);
     }
-
-    const status = rs.status;
 
     let tempRs: {
       response: { data: ReturnType; headers: Record<string, any> };

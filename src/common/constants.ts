@@ -1,10 +1,7 @@
 export class App {
-  static readonly TIME_OFFSET = '+07:00';
-  // static readonly TIMEZONE = 'Asia/Ho_Chi_Minh';
-  static readonly DEFAULT_LOCALE = 'en.UTF-8';
-
   static readonly TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
   static readonly TIMEZONE_OFFSET = -(new Date().getTimezoneOffset() / 60);
+  static readonly DEFAULT_LOCALE = 'en.UTF-8';
 }
 
 //--------------------------------------------------
@@ -93,12 +90,6 @@ export class RequestBodyTypes {
   static isValid(input: string): boolean {
     return this.SCHEME_SET.has(input);
   }
-}
-
-//--------------------------------------------------
-export class GetListVariants {
-  static readonly COUNT = 'COUNT';
-  static readonly CONTENT_RANGE = 'CONTENT_RANGE';
 }
 
 //--------------------------------------------------

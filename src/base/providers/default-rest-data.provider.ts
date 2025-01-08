@@ -1,7 +1,6 @@
 import {
   AnyType,
   CoreBindings,
-  GetListVariants,
   ICustomParams,
   IDataProvider,
   IRestDataProviderOptions,
@@ -52,18 +51,17 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       name: 'default-application-network-service',
       baseUrl: this.restDataProviderOptions.url,
       noAuthPaths: this.restDataProviderOptions.noAuthPaths,
-      getListVariant: this.restDataProviderOptions.getListVariant,
     });
   }
 
   // -------------------------------------------------------------
   // GET_LIST
   // -------------------------------------------------------------
-  getList<RecordType extends RaRecord = AnyType>(_opts: {
+  getList<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: GetListParams & QueryFunctionContext & ICustomParams;
   }): Promise<GetListResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
     const { pagination, sort, filter: filterGetList, meta, ...rest } = params;
 
     let filter: Record<string, AnyType> = {};
@@ -141,37 +139,17 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       ...requestProps,
     });
 
-    if (this.networkService.getGetListVariant() === GetListVariants.CONTENT_RANGE) {
-      return response;
-    }
-
-    const responseCount = this.networkService.doRequest({
-      type: RequestTypes.SEND,
-      paths: [resource, 'count'],
-      query: { ...queryKey, where: filter?.where },
-      ...requestProps,
-    });
-
-    const responseAll = Promise.all([response, responseCount]).then(
-      (responses: AnyType[]) => {
-        return {
-          data: responses?.[0]?.data,
-          total: responses?.[1]?.data?.count || 0,
-        };
-      },
-    );
-
-    return responseAll;
+    return response;
   }
 
   // -------------------------------------------------------------
   // GET_ONE
   // -------------------------------------------------------------
-  getOne<RecordType extends RaRecord = AnyType>(_opts: {
+  getOne<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: GetOneParams<RecordType> & QueryFunctionContext & ICustomParams;
   }): Promise<GetOneResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const request = this.networkService.getRequestProps({ resource });
     const filter = params?.meta?.filter || {};
@@ -197,11 +175,11 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // -------------------------------------------------------------
   // GET_MANY
   // -------------------------------------------------------------
-  getMany<RecordType extends RaRecord = AnyType>(_opts: {
+  getMany<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: GetManyParams<RecordType> & QueryFunctionContext & ICustomParams;
   }): Promise<GetManyResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const request = this.networkService.getRequestProps({ resource });
     const filter = params?.meta?.filter || {};
@@ -233,11 +211,11 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // -------------------------------------------------------------
   // GET_MANY_REFERENCE
   // -------------------------------------------------------------
-  getManyReference<RecordType extends RaRecord = AnyType>(_opts: {
+  getManyReference<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: GetManyReferenceParams & QueryFunctionContext & ICustomParams;
   }): Promise<GetManyReferenceResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const { pagination, sort, filter: filterGetMany, meta, target, id, ...rest } = params;
 
@@ -319,37 +297,17 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       ...requestProps,
     });
 
-    if (this.networkService.getGetListVariant() === GetListVariants.CONTENT_RANGE) {
-      return response;
-    }
-
-    const responseCount = this.networkService.doRequest({
-      type: RequestTypes.SEND,
-      paths: [resource, 'count'],
-      query: { ...queryKey, where: filter?.where },
-      ...requestProps,
-    });
-
-    const responseAll = Promise.all([response, responseCount]).then(
-      (responses: AnyType[]) => {
-        return {
-          data: responses?.[0]?.data,
-          total: responses?.[1]?.data?.count || 0,
-        };
-      },
-    );
-
-    return responseAll;
+    return response;
   }
 
   // -------------------------------------------------------------
   // UPDATE
   // -------------------------------------------------------------
-  update<RecordType extends RaRecord = AnyType>(_opts: {
+  update<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: UpdateParams;
   }): Promise<UpdateResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const request = this.networkService.getRequestProps({
       resource,
@@ -369,11 +327,11 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // -------------------------------------------------------------
   // UPDATE_MANY
   // -------------------------------------------------------------
-  updateMany<RecordType extends RaRecord = AnyType>(_opts: {
+  updateMany<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: UpdateManyParams;
   }): Promise<UpdateManyResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
     const { ids, data } = params;
 
     if (!ids.length) {
@@ -399,11 +357,11 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   create<
     RecordType extends Omit<RaRecord, 'id'> = AnyType,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
-  >(_opts: {
+  >(opts: {
     resource: string;
     params: CreateParams;
   }): Promise<CreateResult<ResultRecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const request = this.networkService.getRequestProps({ resource, body: params.data });
 
@@ -420,11 +378,11 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // -------------------------------------------------------------
   // DELETE
   // -------------------------------------------------------------
-  delete<RecordType extends RaRecord = AnyType>(_opts: {
+  delete<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: DeleteParams<RecordType>;
   }): Promise<DeleteResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const request = this.networkService.getRequestProps({ resource });
 
@@ -441,11 +399,11 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // -------------------------------------------------------------
   // DELETE_MANY
   // -------------------------------------------------------------
-  deleteMany<RecordType extends RaRecord = AnyType>(_opts: {
+  deleteMany<RecordType extends RaRecord = AnyType>(opts: {
     resource: string;
     params: DeleteManyParams<RecordType>;
   }): Promise<DeleteManyResult<RecordType>> {
-    const { resource, params } = _opts;
+    const { resource, params } = opts;
 
     const { ids } = params;
 

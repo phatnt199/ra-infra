@@ -26,10 +26,10 @@ import {
   UpdateManyResult,
   UpdateParams,
   UpdateResult,
+  UserIdentity,
 } from 'react-admin';
 import {
   Environments,
-  GetListVariants,
   RequestBodyTypes,
   RequestMethods,
   RequestTypes,
@@ -80,7 +80,6 @@ export interface ISendParams {
 
 export type TRequestBodyType = Extract<ValueOf<typeof RequestBodyTypes>, string>;
 export type TRequestType = Extract<ValueOf<typeof RequestTypes>, string>;
-export type TGetListVariant = Extract<ValueOf<typeof GetListVariants>, string>;
 
 export interface IGetRequestPropsParams {
   resource: string;
@@ -156,6 +155,19 @@ export interface IDataProvider extends IReactAdminDataProvider {
   }) => Promise<{ data: ReturnType }>;
 }
 
+export interface IReactAdminAuthProvider {
+  login: (params: AnyType) => Promise<{ redirectTo?: string | boolean } | void | any>;
+  logout: (params: AnyType) => Promise<void | false | string>;
+  checkAuth: (params: AnyType & QueryFunctionContext) => Promise<void>;
+  checkError: (error: AnyType) => Promise<void>;
+  getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
+  getPermissions: (params: AnyType & QueryFunctionContext) => Promise<AnyType>;
+}
+
+export interface IAuthProvider extends IReactAdminAuthProvider {
+  getRoles: (params?: AnyType) => Promise<Set<string>>;
+}
+
 // ----------------------------------------------------------------------
 export interface IAuthProviderOptions {
   paths?: { signIn?: string; signUp?: string; checkAuth?: string };
@@ -166,7 +178,7 @@ export interface IRestDataProviderOptions {
   url: string;
   noAuthPaths?: Array<string>;
   headers?: HeadersInit;
-  getListVariant?: TGetListVariant;
+  // getListVariant?: TGetListVariant;
 }
 
 // ----------------------------------------------------------------------

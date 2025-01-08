@@ -9,7 +9,7 @@ export class DefaultAuthService {
     const roles = JSON.parse(
       localStorage.getItem(LocalStorageKeys.KEY_AUTH_PERMISSION) || '[]',
     );
-    return new Set(roles);
+    return new Set<string>(roles);
   }
 
   getAuth() {
