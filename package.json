@@ -93,6 +93,7 @@
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
+    "@mui/icons-material": "^5.12.3",
     "@mui/material": "^5.12.3",
     "react": ">=18.0.0",
     "react-admin": "^5.4.3",
