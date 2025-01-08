@@ -33,13 +33,13 @@ export class Logger implements ILogger {
     switch (typeof message) {
       case 'string': {
         return {
-          message: `[${timestamp} - [${level}] ${message}`,
+          message: `${timestamp} - [${level}] ${message}`,
           args: [],
         };
       }
       default: {
         return {
-          message: `[${timestamp} - [${level}]`,
+          message: `${timestamp} - [${level}]`,
           args: [message],
         };
       }
