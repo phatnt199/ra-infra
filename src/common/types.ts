@@ -20,6 +20,7 @@ import {
   GetOneParams,
   GetOneResult,
   Identifier,
+  Locale,
   QueryFunctionContext,
   RaRecord,
   UpdateManyParams,
@@ -178,7 +179,12 @@ export interface IRestDataProviderOptions {
   url: string;
   noAuthPaths?: Array<string>;
   headers?: HeadersInit;
-  // getListVariant?: TGetListVariant;
+}
+
+// ----------------------------------------------------------------------
+export interface II18nProviderOptions {
+  i18nSources?: Record<string | symbol, any>;
+  listLanguages?: Locale[];
 }
 
 // ----------------------------------------------------------------------

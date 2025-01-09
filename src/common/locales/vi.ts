@@ -1,6 +1,6 @@
 import { TranslationMessages } from 'ra-core';
 
-const vietnameseMessages: TranslationMessages = {
+export const vietnameseMessages: TranslationMessages = {
   ra: {
     action: {
       add_filter: 'Thêm bộ lọc',
@@ -204,5 +204,3 @@ const vietnameseMessages: TranslationMessages = {
     },
   },
 };
-
-export default vietnameseMessages;

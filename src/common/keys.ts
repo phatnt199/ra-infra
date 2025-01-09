@@ -10,7 +10,7 @@ export class CoreBindings {
 
   static readonly REST_DATA_PROVIDER_OPTIONS = '@app/application/options/rest/data';
 
-  static readonly I18N_SOURCES = '@app/application/options/i18n/sources';
+  static readonly I18N_PROVIDER_OPTIONS = '@app/application/options/i18n';
 }
 
 export class LocalStorageKeys {
