@@ -1,12 +1,13 @@
 import {
   Collapse,
+  Icon,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ITreeData } from './Tree';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -43,21 +44,30 @@ export function TreeItem<T extends ITreeData>(props: IProps<T>) {
   }, [data.id, enableActivated]);
 
   //--------------------------------------------------
-  const RenderIcon = useMemo(() => {
-    if (!hasChild) {
-      return data?.icon?.default ?? React.Fragment;
-    }
-
-    return isOpen
-      ? (data?.icon?.expanded ?? KeyboardArrowDownIcon)
-      : (data?.icon?.collapsed ?? KeyboardArrowRightIcon);
-  }, [data?.icon, hasChild, isOpen]);
-
-  //--------------------------------------------------
   const handleClick = React.useCallback(() => {
     setIsOpen(prev => !prev);
   }, []);
 
+  //--------------------------------------------------
+  const renderIcon = React.useCallback(
+    (opts: { hasChild: boolean; icon?: typeof data.icon }) => {
+      if (!opts.hasChild) {
+        return <Icon>opts?.icon?.default</Icon>;
+      }
+
+      const ExpandedIcon = opts?.icon?.expanded || KeyboardArrowDownIcon;
+      const CollapsedIcon = opts?.icon?.collapsed || KeyboardArrowRightIcon;
+
+      if (isOpen) {
+        return <ExpandedIcon />;
+      }
+
+      return <CollapsedIcon />;
+    },
+    [],
+  );
+
+  //--------------------------------------------------
   return (
     <List disablePadding dense sx={{ overflowX: 'hidden', width: 1 }}>
       <ListItem
@@ -82,7 +92,7 @@ export function TreeItem<T extends ITreeData>(props: IProps<T>) {
           }}
         >
           <ListItemIcon sx={{ minWidth: 'unset' }}>
-            <RenderIcon />
+            {renderIcon({ hasChild, icon: data.icon })}
           </ListItemIcon>
 
           <ListItemText disableTypography sx={{ m: 0, fontSize: 12 }}>

@@ -17,5 +17,11 @@ export const useApplicationContext = () => {
 
 export const useApplicationLogger = () => {
   const rs = React.useContext(ApplicationContext);
+  if (!rs?.logger) {
+    throw getError({
+      message: '[useApplicationLogger] must be used within a ApplicationContextProvider',
+    });
+  }
+
   return rs.logger;
 };
