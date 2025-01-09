@@ -12,12 +12,12 @@ export interface ITreeData {
   };
 }
 
-export interface ITreeProps<T extends ITreeData> {
-  data: T[];
+export interface ITreeProps {
+  data: ITreeData[];
   itemProps?: ITreeItemProps;
 }
 
-export function Tree<T extends ITreeData>(props: ITreeProps<T>) {
+export const Tree = (props: ITreeProps) => {
   const { data, itemProps } = props;
 
   return (
@@ -31,4 +31,4 @@ export function Tree<T extends ITreeData>(props: ITreeProps<T>) {
       })}
     </List>
   );
-}
+};

@@ -14,19 +14,19 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export interface ITreeItemProps {
   height?: number;
-  enableActivated?: (id: string | number) => boolean;
+  enableActivated?: (opts: { id: ITreeData['id'] }) => boolean;
   onClick?: (opts: {
     event: React.MouseEvent<HTMLDivElement, MouseEvent>;
-    id: string | number;
+    id: ITreeData['id'];
   }) => void;
 }
 
-interface IProps<T extends ITreeData> extends ITreeItemProps {
-  data: T;
+interface IProps extends ITreeItemProps {
+  data: ITreeData;
   level: number;
 }
 
-export function TreeItem<T extends ITreeData>(props: IProps<T>) {
+export const TreeItem = (props: IProps) => {
   const { data, level, ...restProps } = props;
   const { height = 24, enableActivated, onClick } = restProps;
 
@@ -40,7 +40,7 @@ export function TreeItem<T extends ITreeData>(props: IProps<T>) {
 
   //--------------------------------------------------
   const isActivated = React.useMemo(() => {
-    return enableActivated?.(data.id);
+    return enableActivated?.({ id: data.id });
   }, [data.id, enableActivated]);
 
   //--------------------------------------------------
@@ -50,15 +50,15 @@ export function TreeItem<T extends ITreeData>(props: IProps<T>) {
 
   //--------------------------------------------------
   const renderIcon = React.useCallback(
-    (opts: { hasChild: boolean; icon?: typeof data.icon }) => {
+    (opts: { isOpen: boolean; hasChild: boolean; icon?: ITreeData['icon'] }) => {
       if (!opts.hasChild) {
         return <Icon>opts?.icon?.default</Icon>;
       }
 
-      const ExpandedIcon = opts?.icon?.expanded || KeyboardArrowDownIcon;
-      const CollapsedIcon = opts?.icon?.collapsed || KeyboardArrowRightIcon;
+      const ExpandedIcon = opts.icon?.expanded || KeyboardArrowDownIcon;
+      const CollapsedIcon = opts.icon?.collapsed || KeyboardArrowRightIcon;
 
-      if (isOpen) {
+      if (opts.isOpen) {
         return <ExpandedIcon />;
       }
 
@@ -92,7 +92,7 @@ export function TreeItem<T extends ITreeData>(props: IProps<T>) {
           }}
         >
           <ListItemIcon sx={{ minWidth: 'unset' }}>
-            {renderIcon({ hasChild, icon: data.icon })}
+            {renderIcon({ isOpen, hasChild, icon: data.icon })}
           </ListItemIcon>
 
           <ListItemText disableTypography sx={{ m: 0, fontSize: 12 }}>
@@ -112,4 +112,4 @@ export function TreeItem<T extends ITreeData>(props: IProps<T>) {
       )}
     </List>
   );
-}
+};
