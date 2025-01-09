@@ -10,7 +10,6 @@ import {
   DataProvider,
   I18nProvider,
   Resource,
-  ResourceProps,
 } from 'react-admin';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Route } from 'react-router-dom';
@@ -48,6 +47,8 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
     ...raProps
   } = props;
 
+  const { layout, routes } = customRoutes ?? {};
+
   // -------------------------------------------------------------------------------
   const adminProps = React.useMemo(() => {
     const dataProvider = context.getSync<DataProvider>(
@@ -67,14 +68,16 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
   return (
     <Wrapper context={context} reduxStore={reduxStore} suspense={suspense} debug={debug}>
       <Admin {...adminProps}>
-        {resources?.map((resource: ResourceProps) => {
+        {resources.map(resource => {
           return <Resource key={resource.name} {...resource} />;
         })}
 
         <CustomRoutes>
-          {customRoutes?.map(resource => {
-            return <Route key={resource.path} {...resource} />;
-          })}
+          <Route element={layout}>
+            {routes?.map(resource => {
+              return <Route key={resource.id ?? resource.path} {...resource} />;
+            })}
+          </Route>
         </CustomRoutes>
       </Admin>
     </Wrapper>

@@ -1,8 +1,9 @@
 import { Context } from '@loopback/context';
 import { AdminProps, ResourceProps } from 'react-admin';
+import { RouteProps } from 'react-router-dom';
 import { Store } from 'redux';
 
-export interface IApplication extends AdminProps {
+export interface IApplication extends Omit<AdminProps, 'children'> {
   context: Context;
 
   debug?: boolean;
@@ -10,5 +11,8 @@ export interface IApplication extends AdminProps {
   suspense: React.ReactNode;
 
   resources: Array<ResourceProps>;
-  customRoutes?: Array<{ name: string; path: string; element: React.ReactElement }>;
+  customRoutes?: {
+    layout?: React.ReactNode | null;
+    routes: Array<RouteProps>;
+  };
 }
