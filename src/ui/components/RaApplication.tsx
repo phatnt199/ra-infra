@@ -21,12 +21,12 @@ const Wrapper: React.FC<{
   context: Context;
   reduxStore: Store;
   suspense: React.ReactNode;
-  debug?: boolean;
+  enableDebug?: boolean;
   children: React.ReactNode;
-}> = ({ context, reduxStore, suspense, debug = false, children }) => {
+}> = ({ context, reduxStore, suspense, enableDebug = false, children }) => {
   return (
     <ApplicationContext.Provider
-      value={{ context, logger: Logger.getInstance({ debug }) }}
+      value={{ context, logger: Logger.getInstance({ enableDebug }) }}
     >
       <ReduxProvider store={reduxStore}>
         <React.Suspense fallback={suspense}>{children}</React.Suspense>
@@ -41,7 +41,7 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
     context,
     reduxStore,
     suspense,
-    debug = false,
+    enableDebug = false,
     resources,
     customRoutes,
     ...raProps
@@ -66,7 +66,12 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
 
   // -------------------------------------------------------------------------------
   return (
-    <Wrapper context={context} reduxStore={reduxStore} suspense={suspense} debug={debug}>
+    <Wrapper
+      context={context}
+      reduxStore={reduxStore}
+      suspense={suspense}
+      enableDebug={enableDebug}
+    >
       <Admin {...adminProps}>
         {resources.map(resource => {
           return <Resource key={resource.name} {...resource} />;

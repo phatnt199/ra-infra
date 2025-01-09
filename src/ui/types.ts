@@ -6,7 +6,7 @@ import { Store } from 'redux';
 export interface IApplication extends Omit<AdminProps, 'children'> {
   context: Context;
 
-  debug?: boolean;
+  enableDebug?: boolean;
   reduxStore: Store;
   suspense: React.ReactNode;
 

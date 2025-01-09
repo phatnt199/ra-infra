@@ -11,8 +11,8 @@ export const useBeforeUnload = (params: IUseBeforeUnloadParams) => {
   //---------------------------------------------------------------------------
   const handleBeforeUnload = React.useCallback(
     (event: BeforeUnloadEvent) => {
-      const _enabled = enabled instanceof Function ? enabled() : enabled;
-      if (!_enabled) {
+      const isEnabled = enabled instanceof Function ? enabled() : enabled;
+      if (!isEnabled) {
         return;
       }
 

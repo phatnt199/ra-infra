@@ -15,16 +15,16 @@ export class Logger implements ILogger {
   private static instance: Logger;
   private isDebugEnabled: boolean;
 
-  constructor(opts?: { debug: boolean }) {
-    this.isDebugEnabled = opts?.debug ?? false;
+  constructor(opts?: { enableDebug: boolean }) {
+    this.isDebugEnabled = opts?.enableDebug ?? false;
   }
 
-  static getInstance(opts?: { debug: boolean }): Logger {
+  static getInstance(opts?: { enableDebug: boolean }): Logger {
     if (!this.instance) {
       this.instance = new Logger(opts);
     }
 
-    this.instance.isDebugEnabled = opts?.debug ?? false;
+    this.instance.isDebugEnabled = opts?.enableDebug ?? false;
     return this.instance;
   }
 

@@ -18,11 +18,11 @@ export const getStringValue = <
 >(opts: {
   value: AnyType;
   defaultValue?: TDefaultValue;
-  skipEmptyString?: boolean;
+  ignoreEmptyString?: boolean;
 }) => {
-  const { value, defaultValue, skipEmptyString = true } = opts;
+  const { value, defaultValue, ignoreEmptyString = true } = opts;
   return (
-    (skipEmptyString ? isDefined(value) : !value) && isString(value)
+    (ignoreEmptyString ? isDefined(value) : !value) && isString(value)
       ? value.trim()
       : defaultValue
   ) as TResult;
