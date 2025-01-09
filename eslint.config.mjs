@@ -10,6 +10,10 @@ const configs = [
       '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
+  {
+    files: ['**/locales/*.ts'],
+    rules: { '@typescript-eslint/naming-convention': ['off'] },
+  },
 ];
 
 export default configs;
