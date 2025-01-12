@@ -10,7 +10,7 @@ import {
   TRequestMethod,
   TRequestType,
 } from '@/common';
-import { DefaultNetworkRequestService } from '@/services';
+import { DefaultNetworkRequestService } from '@/base/services';
 import { getError } from '@/utilities';
 import { inject, ValueOrPromise } from '@loopback/context';
 import omit from 'lodash/omit';

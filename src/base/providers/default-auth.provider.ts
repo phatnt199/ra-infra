@@ -6,7 +6,7 @@ import {
   IDataProvider,
   RequestMethods,
 } from '@/common';
-import { DefaultAuthService } from '@/services';
+import { DefaultAuthService } from '@/base/services';
 import { inject, ValueOrPromise } from '@loopback/context';
 import { AuthProvider } from 'react-admin';
 import { BaseProvider } from './base.provider';
