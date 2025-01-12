@@ -1,39 +1,40 @@
 import {
-  BindingTag,
-  Constructor,
-  DynamicValueProviderClass,
-  ValueOrPromise,
+    BindingTag,
+    Constructor,
+    DynamicValueProviderClass,
+    ValueOrPromise,
 } from '@loopback/context';
+import { Filter, Where } from '@loopback/filter';
 import {
-  CreateParams,
-  CreateResult,
-  DeleteManyParams,
-  DeleteManyResult,
-  DeleteParams,
-  DeleteResult,
-  GetListParams,
-  GetListResult,
-  GetManyParams,
-  GetManyReferenceParams,
-  GetManyReferenceResult,
-  GetManyResult,
-  GetOneParams,
-  GetOneResult,
-  Identifier,
-  Locale,
-  QueryFunctionContext,
-  RaRecord,
-  UpdateManyParams,
-  UpdateManyResult,
-  UpdateParams,
-  UpdateResult,
-  UserIdentity,
+    CreateParams,
+    CreateResult,
+    DeleteManyParams,
+    DeleteManyResult,
+    DeleteParams,
+    DeleteResult,
+    GetListParams,
+    GetListResult,
+    GetManyParams,
+    GetManyReferenceParams,
+    GetManyReferenceResult,
+    GetManyResult,
+    GetOneParams,
+    GetOneResult,
+    Identifier,
+    Locale,
+    QueryFunctionContext,
+    RaRecord,
+    UpdateManyParams,
+    UpdateManyResult,
+    UpdateParams,
+    UpdateResult,
+    UserIdentity,
 } from 'react-admin';
 import {
-  Environments,
-  RequestBodyTypes,
-  RequestMethods,
-  RequestTypes,
+    Environments,
+    RequestBodyTypes,
+    RequestMethods,
+    RequestTypes,
 } from './constants';
 
 //-----------------------------------------------------------
@@ -57,6 +58,9 @@ export type ClassType<T> = Function & { prototype: T };
 export type TStatusFromClass<T extends ClassType<AnyObject>> = ValueOf<
   Omit<T, 'prototype' | 'isValid' | 'SCHEME_SET'>
 >;
+
+//-----------------------------------------------------------
+export type EntityRelationType = {};
 
 //-----------------------------------------------------------
 export type TRequestMethod = TStatusFromClass<typeof RequestMethods>;
@@ -189,6 +193,23 @@ export interface II18nProviderOptions {
 
 // ----------------------------------------------------------------------
 export interface IService {}
+
+// ----------------------------------------------------------------------
+export interface ICrudService<
+  E extends { id: IdType; [extra: string | symbol]: any } = any,
+> extends IService {
+  find(filter: Filter<E>): Promise<Array<E & EntityRelationType>>;
+  findById(id: IdType, filter: Filter<E>): Promise<E & EntityRelationType>;
+  findOne(filter: Filter<E>): Promise<(E & EntityRelationType) | null>;
+  count(where: Where<E>): Promise<{ count: number }>;
+
+  // CUD
+  create(data: Omit<E, 'id'>): Promise<E>;
+  updateAll(data: Partial<E>, where: Where<E>): Promise<{ count: number }>;
+  updateById(id: IdType, data: Partial<E>): Promise<E>;
+  replaceById(id: IdType, data: E): Promise<E>;
+  deleteById(id: IdType): Promise<{ id: IdType }>;
+}
 
 // ----------------------------------------------------------------------
 export interface IRaApplication {

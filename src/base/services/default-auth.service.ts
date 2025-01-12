@@ -1,4 +1,4 @@
-import { LocalStorageKeys } from '@/common';
+import { LocalStorageKeys } from '../../common';
 
 export class DefaultAuthService {
   getUser() {

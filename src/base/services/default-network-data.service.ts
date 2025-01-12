@@ -10,8 +10,8 @@ import {
   RequestTypes,
   TRequestMethod,
   TRequestType,
-} from '../common';
-import { getError } from '../utilities';
+} from '../../common';
+import { getError } from '../../utilities';
 import { BaseNetworkRequestService } from './base-network-request.service';
 
 export class DefaultNetworkRequestService extends BaseNetworkRequestService {

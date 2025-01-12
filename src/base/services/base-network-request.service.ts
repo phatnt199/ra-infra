@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
-import { NetworkHelper } from '@/helpers';
-import { getError } from '@/utilities';
+import { NetworkHelper } from '../../helpers';
+import { getError } from '../../utilities';
 
 export abstract class BaseNetworkRequestService {
   protected baseUrl: string;
