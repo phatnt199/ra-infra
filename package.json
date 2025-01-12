@@ -25,6 +25,14 @@
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./@lb/context": {
+      "default": "./dist/base/loopback/@lb/context/index.js",
+      "types": "./dist/base/loopback/@lb/context/index.d.ts"
+    },
+    "./@lb/filter": {
+      "default": "./dist/base/loopback/@lb/filter/index.js",
+      "types": "./dist/base/loopback/@lb/filter/index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "engines": {
