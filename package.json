@@ -26,12 +26,16 @@
       "types": "./dist/index.d.ts"
     },
     "./@lb/context": {
-      "default": "./dist/base/loopback/@lb/context/index.js",
-      "types": "./dist/base/loopback/@lb/context/index.d.ts"
+      "default": "./dist/base/re-exports/loopback/@lb/context/index.js",
+      "types": "./dist/base/re-exports/loopback/@lb/context/index.d.ts"
     },
     "./@lb/filter": {
-      "default": "./dist/base/loopback/@lb/filter/index.js",
-      "types": "./dist/base/loopback/@lb/filter/index.d.ts"
+      "default": "./dist/base/re-exports/loopback/@lb/filter/index.js",
+      "types": "./dist/base/re-exports/loopback/@lb/filter/index.d.ts"
+    },
+    "./@ra/redux": {
+      "default": "./dist/base/re-exports/react-redux/index.js",
+      "types": "./dist/base/re-exports/react-redux/index.d.ts"
     },
     "./package.json": "./package.json"
   },
