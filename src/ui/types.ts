@@ -1,7 +1,7 @@
 import { Context } from '@loopback/context';
+import { Store } from '@reduxjs/toolkit';
 import { AdminProps, ResourceProps } from 'react-admin';
 import { RouteProps } from 'react-router-dom';
-import { Store } from 'redux';
 
 export interface IApplication extends Omit<AdminProps, 'children'> {
   context: Context;

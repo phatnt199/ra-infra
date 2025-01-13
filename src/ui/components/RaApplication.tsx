@@ -3,6 +3,7 @@ import React from 'react';
 import { CoreBindings } from '@/common';
 import { Logger } from '@/helpers';
 import { Context } from '@loopback/context';
+import { Store } from '@reduxjs/toolkit';
 import {
   Admin,
   AuthProvider,
@@ -13,7 +14,6 @@ import {
 } from 'react-admin';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { Store } from 'redux';
 import { ApplicationContext } from '../context';
 import { IApplication } from '../types';
 
