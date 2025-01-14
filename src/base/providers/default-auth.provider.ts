@@ -14,11 +14,11 @@ import { BaseProvider } from './base.provider';
 export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
   constructor(
     @inject(CoreBindings.DEFAULT_REST_DATA_PROVIDER)
-    private restDataProvider: IDataProvider,
+    protected restDataProvider: IDataProvider,
     @inject(CoreBindings.AUTH_PROVIDER_OPTIONS)
-    private authProviderOptions: IAuthProviderOptions,
+    protected authProviderOptions: IAuthProviderOptions,
     @inject(CoreBindings.DEFAULT_AUTH_SERVICE)
-    private authService: DefaultAuthService,
+    protected authService: DefaultAuthService,
   ) {
     super();
   }

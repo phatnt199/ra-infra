@@ -9,7 +9,7 @@ const [language] = (navigator?.language || 'en-US').split('-');
 export class DefaultI18nProvider extends BaseProvider<I18nProvider> {
   constructor(
     @inject(CoreBindings.I18N_PROVIDER_OPTIONS)
-    private i18nProviderOptions: II18nProviderOptions,
+    protected i18nProviderOptions: II18nProviderOptions,
   ) {
     super();
   }
