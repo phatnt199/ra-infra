@@ -11,10 +11,12 @@ import { inject, ValueOrPromise } from '@loopback/context';
 import { AuthProvider } from 'react-admin';
 import { BaseProvider } from './base.provider';
 
-export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
+export class DefaultAuthProvider<
+  TResource extends string = string,
+> extends BaseProvider<AuthProvider> {
   constructor(
     @inject(CoreBindings.DEFAULT_REST_DATA_PROVIDER)
-    protected restDataProvider: IDataProvider,
+    protected restDataProvider: IDataProvider<TResource>,
     @inject(CoreBindings.AUTH_PROVIDER_OPTIONS)
     protected authProviderOptions: IAuthProviderOptions,
     @inject(CoreBindings.DEFAULT_AUTH_SERVICE)
@@ -30,7 +32,8 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
     return new Promise((resolve, reject) => {
       this.restDataProvider
         .send({
-          resource: this.authProviderOptions.paths?.signIn ?? '/auth/login',
+          resource: (this.authProviderOptions.paths?.signIn ??
+            '/auth/login') as TResource,
           params: { method: RequestMethods.POST, body: params },
         })
         .then(rs => {
@@ -70,7 +73,7 @@ export class DefaultAuthProvider extends BaseProvider<AuthProvider> {
     }
 
     const rs = await this.restDataProvider.send({
-      resource: this.authProviderOptions.paths.checkAuth,
+      resource: this.authProviderOptions.paths.checkAuth as TResource,
       params: { method: RequestMethods.GET },
     });
 

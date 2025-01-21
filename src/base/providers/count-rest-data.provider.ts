@@ -2,10 +2,12 @@ import { AnyType, RequestTypes, TRequestMethod, TRequestType } from '@/common';
 import { RaRecord } from 'react-admin';
 import { DefaultRestDataProvider } from './default-rest-data.provider';
 
-export class CountRestDataProvider extends DefaultRestDataProvider {
+export class CountRestDataProvider<
+  TResource extends string = string,
+> extends DefaultRestDataProvider<TResource> {
   //---------------------------------------------------------------------------
   override getListHelper<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     type: TRequestType;
     queryKey: Record<string, AnyType>;
     filter: Record<string, AnyType>;

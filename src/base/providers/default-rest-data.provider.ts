@@ -5,6 +5,7 @@ import {
   IDataProvider,
   IRestDataProviderOptions,
   ISendParams,
+  ISendResponse,
   RequestMethods,
   RequestTypes,
   TRequestMethod,
@@ -39,7 +40,9 @@ import {
 } from 'react-admin';
 import { BaseProvider } from './base.provider';
 
-export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
+export class DefaultRestDataProvider<
+  TResource extends string = string,
+> extends BaseProvider<IDataProvider<TResource>> {
   protected networkService: DefaultNetworkRequestService;
 
   constructor(
@@ -57,7 +60,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
 
   //---------------------------------------------------------------------------
   getListHelper<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     type: TRequestType;
     queryKey: Record<string, AnyType>;
     filter: Record<string, AnyType>;
@@ -80,7 +83,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // GET_LIST
   // -------------------------------------------------------------
   getList<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: GetListParams & QueryFunctionContext & ICustomParams;
   }): Promise<GetListResult<RecordType>> {
     const { resource, params } = opts;
@@ -167,7 +170,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // GET_ONE
   // -------------------------------------------------------------
   getOne<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: GetOneParams<RecordType> & QueryFunctionContext & ICustomParams;
   }): Promise<GetOneResult<RecordType>> {
     const { resource, params } = opts;
@@ -197,7 +200,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // GET_MANY
   // -------------------------------------------------------------
   getMany<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: GetManyParams<RecordType> & QueryFunctionContext & ICustomParams;
   }): Promise<GetManyResult<RecordType>> {
     const { resource, params } = opts;
@@ -233,7 +236,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // GET_MANY_REFERENCE
   // -------------------------------------------------------------
   getManyReference<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: GetManyReferenceParams & QueryFunctionContext & ICustomParams;
   }): Promise<GetManyReferenceResult<RecordType>> {
     const { resource, params } = opts;
@@ -324,7 +327,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // UPDATE
   // -------------------------------------------------------------
   update<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: UpdateParams;
   }): Promise<UpdateResult<RecordType>> {
     const { resource, params } = opts;
@@ -348,7 +351,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // UPDATE_MANY
   // -------------------------------------------------------------
   updateMany<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: UpdateManyParams;
   }): Promise<UpdateManyResult<RecordType>> {
     const { resource, params } = opts;
@@ -378,7 +381,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
     RecordType extends Omit<RaRecord, 'id'> = AnyType,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
   >(opts: {
-    resource: string;
+    resource: TResource;
     params: CreateParams;
   }): Promise<CreateResult<ResultRecordType>> {
     const { resource, params } = opts;
@@ -399,7 +402,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // DELETE
   // -------------------------------------------------------------
   delete<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: DeleteParams<RecordType>;
   }): Promise<DeleteResult<RecordType>> {
     const { resource, params } = opts;
@@ -420,7 +423,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // DELETE_MANY
   // -------------------------------------------------------------
   deleteMany<RecordType extends RaRecord = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: DeleteManyParams<RecordType>;
   }): Promise<DeleteManyResult<RecordType>> {
     const { resource, params } = opts;
@@ -457,9 +460,9 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
   // SEND
   // -------------------------------------------------------------
   send<ReturnType = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: ISendParams;
-  }): Promise<{ data: ReturnType }> {
+  }): Promise<ISendResponse<ReturnType>> {
     const { resource, params } = opts;
 
     if (!params?.method) {
@@ -483,7 +486,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
     return response;
   }
 
-  override value(): ValueOrPromise<IDataProvider> {
+  override value(): ValueOrPromise<IDataProvider<TResource>> {
     return {
       getList: (resource, params) => {
         return this.getList({ resource, params });
@@ -512,7 +515,7 @@ export class DefaultRestDataProvider extends BaseProvider<IDataProvider> {
       deleteMany: (resource, params) => {
         return this.deleteMany({ resource, params });
       },
-      send: (opts: { resource: string; params: ISendParams }) => {
+      send: (opts: { resource: TResource; params: ISendParams }) => {
         return this.send(opts);
       },
     };

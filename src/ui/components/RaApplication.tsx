@@ -1,17 +1,10 @@
 import React from 'react';
 
-import { CoreBindings } from '@/common';
+import { CoreBindings, IAuthProvider, IDataProvider } from '@/common';
 import { Logger } from '@/helpers';
 import { Context } from '@loopback/context';
 import { Store } from '@reduxjs/toolkit';
-import {
-  Admin,
-  AuthProvider,
-  CustomRoutes,
-  DataProvider,
-  I18nProvider,
-  Resource,
-} from 'react-admin';
+import { Admin, CustomRoutes, I18nProvider, Resource } from 'react-admin';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { ApplicationContext } from '../context';
@@ -51,10 +44,10 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
 
   // -------------------------------------------------------------------------------
   const adminProps = React.useMemo(() => {
-    const dataProvider = context.getSync<DataProvider>(
+    const dataProvider = context.getSync<IDataProvider>(
       CoreBindings.DEFAULT_REST_DATA_PROVIDER,
     );
-    const authProvider = context.getSync<AuthProvider>(
+    const authProvider = context.getSync<IAuthProvider>(
       CoreBindings.DEFAULT_AUTH_PROVIDER,
     );
     const i18nProvider = context.getSync<I18nProvider>(

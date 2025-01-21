@@ -81,6 +81,12 @@ export interface ISendParams {
   file?: any;
   query?: { [key: string]: any };
   headers?: { [key: string]: string | number };
+  [key: string]: any;
+}
+
+export interface ISendResponse<T = AnyType> {
+  data: T;
+  [key: string]: any;
 }
 
 export type TRequestBodyType = Extract<ValueOf<typeof RequestBodyTypes>, string>;
@@ -103,34 +109,34 @@ export interface ICustomParams {
   [key: string]: AnyType;
 }
 
-export interface IReactAdminDataProvider {
+export interface IReactAdminDataProvider<TResource extends string = string> {
   getList: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: GetListParams & QueryFunctionContext & ICustomParams,
   ) => Promise<GetListResult<RecordType>>;
 
   getOne: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: GetOneParams<RecordType> & QueryFunctionContext & ICustomParams,
   ) => Promise<GetOneResult<RecordType>>;
 
   getMany: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: GetManyParams<RecordType> & QueryFunctionContext & ICustomParams,
   ) => Promise<GetManyResult<RecordType>>;
 
   getManyReference: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: GetManyReferenceParams & QueryFunctionContext & ICustomParams,
   ) => Promise<GetManyReferenceResult<RecordType>>;
 
   update: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: UpdateParams,
   ) => Promise<UpdateResult<RecordType>>;
 
   updateMany: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: UpdateManyParams,
   ) => Promise<UpdateManyResult<RecordType>>;
 
@@ -138,26 +144,27 @@ export interface IReactAdminDataProvider {
     RecordType extends Omit<RaRecord, 'id'> = AnyType,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
   >(
-    resource: string,
+    resource: TResource,
     params: CreateParams,
   ) => Promise<CreateResult<ResultRecordType>>;
 
   delete: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: DeleteParams<RecordType>,
   ) => Promise<DeleteResult<RecordType>>;
 
   deleteMany: <RecordType extends RaRecord = AnyType>(
-    resource: string,
+    resource: TResource,
     params: DeleteManyParams<RecordType>,
   ) => Promise<DeleteManyResult<RecordType>>;
 }
 
-export interface IDataProvider extends IReactAdminDataProvider {
+export interface IDataProvider<TResource extends string = string>
+  extends IReactAdminDataProvider<TResource> {
   send: <ReturnType = AnyType>(opts: {
-    resource: string;
+    resource: TResource;
     params: ISendParams;
-  }) => Promise<{ data: ReturnType }>;
+  }) => Promise<ISendResponse<ReturnType>>;
 }
 
 export interface IReactAdminAuthProvider {
