@@ -1,3 +1,4 @@
+import { DefaultAuthService } from '@/base/services';
 import {
   AnyType,
   CoreBindings,
@@ -6,14 +7,12 @@ import {
   IDataProvider,
   RequestMethods,
 } from '@/common';
-import { DefaultAuthService } from '@/base/services';
 import { inject, ValueOrPromise } from '@loopback/context';
-import { AuthProvider } from 'react-admin';
 import { BaseProvider } from './base.provider';
 
 export class DefaultAuthProvider<
   TResource extends string = string,
-> extends BaseProvider<AuthProvider> {
+> extends BaseProvider<IAuthProvider> {
   constructor(
     @inject(CoreBindings.DEFAULT_REST_DATA_PROVIDER)
     protected restDataProvider: IDataProvider<TResource>,

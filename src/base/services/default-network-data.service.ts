@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
 import {
   AnyType,
   App,
@@ -10,8 +9,9 @@ import {
   RequestTypes,
   TRequestMethod,
   TRequestType,
-} from '../../common';
-import { getError } from '../../utilities';
+} from '@/common';
+import { getError } from '@/utilities';
+import isEmpty from 'lodash/isEmpty';
 import { BaseNetworkRequestService } from './base-network-request.service';
 
 export class DefaultNetworkRequestService extends BaseNetworkRequestService {

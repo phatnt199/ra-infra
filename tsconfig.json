@@ -18,7 +18,7 @@
     "declaration": true,
     "importHelpers": false,
     "esModuleInterop": true,
-    "removeComments": false,
+    "removeComments": true,
 
     /* Linting */
     "strict": true,
