@@ -76,12 +76,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^7.0.9",
-    "@loopback/filter": "^5.0.6",
-    "@reduxjs/toolkit": "^2.3.0",
-    "dayjs": "^1.11.7",
-    "ra-i18n-polyglot": "^5.3.0",
-    "react-number-format": "^5.2.2",
+    "@loopback/context": "^8.0.2",
+    "@loopback/filter": "^6.0.2",
+    "@reduxjs/toolkit": "^2.8.2",
+    "dayjs": "^1.11.13",
+    "ra-i18n-polyglot": "^5.4.4",
+    "react-number-format": "^5.4.4",
     "react-router-dom": "^6.22.0"
   },
   "devDependencies": {
@@ -111,6 +111,5 @@
     "react-admin": ">=5.0.0",
     "react-redux": "^9.1.2",
     "react-dom": ">=18.0"
-  },
-  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
+  }
 }
