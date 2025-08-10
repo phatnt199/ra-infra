@@ -25,14 +25,6 @@
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./@lb/context": {
-      "default": "./dist/base/re-exports/loopback/@lb/context/index.js",
-      "types": "./dist/base/re-exports/loopback/@lb/context/index.d.ts"
-    },
-    "./@lb/filter": {
-      "default": "./dist/base/re-exports/loopback/@lb/filter/index.js",
-      "types": "./dist/base/re-exports/loopback/@lb/filter/index.d.ts"
-    },
     "./package.json": "./package.json"
   },
   "engines": {
@@ -80,8 +72,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/context": "^8.0.2",
-    "@loopback/filter": "^6.0.2",
     "@reduxjs/toolkit": "^2.8.2",
     "dayjs": "^1.11.13",
     "ra-i18n-polyglot": "^5.4.4",
@@ -109,6 +99,8 @@
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
+    "@loopback/context": "^8.0.2",
+    "@loopback/filter": "^6.0.2",
     "@mui/icons-material": ">=5",
     "@mui/material": ">=5",
     "react": ">=18.0",
