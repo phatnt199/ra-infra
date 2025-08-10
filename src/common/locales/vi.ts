@@ -24,7 +24,9 @@ export const vietnameseMessages: TranslationMessages = {
       remove: 'Xóa',
       save: 'Lưu',
       search: 'Tìm kiếm',
+      search_columns: 'Chọn cột',
       select_all: 'Chọn tất cả',
+      select_all_button: 'Chọn tất cả',
       select_row: 'Chọn dòng này',
       show: 'Hiển thị',
       sort: 'Sắp xếp',
@@ -106,6 +108,9 @@ export const vietnameseMessages: TranslationMessages = {
       access_denied:
         'Bạn không có quyền truy cập vào trang này. Hãy liên hệ với quản trị viên của bạn để biết thêm thông tin.',
       authentication_error: 'Xác thực không thành công. Vui lòng thử lại.',
+      select_all_limit_reached:
+        'Có quá nhiều phần tử được chọn. Vui lòng chọn tối đa %{max} phần tử.',
+      placeholder_data_warning: 'Không thể tải lại dữ liệu.',
     },
     navigation: {
       clear_filters: 'Xóa bộ lọc',
@@ -136,6 +141,7 @@ export const vietnameseMessages: TranslationMessages = {
       user_menu: 'Hồ sơ',
       username: 'Tên đăng nhập',
       password: 'Mật khẩu',
+      email: 'Email',
       sign_in: 'Đăng nhập',
       sign_in_error: 'Đăng nhập không thành công, vui lòng thử lại',
       logout: 'Đăng xuất',

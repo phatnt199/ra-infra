@@ -24,7 +24,9 @@ export const englishMessages: TranslationMessages = {
       remove: 'Remove',
       save: 'Save',
       search: 'Search',
+      search_columns: 'Search columns',
       select_all: 'Select all',
+      select_all_button: 'Select all',
       select_row: 'Select this row',
       show: 'Show',
       sort: 'Sort',
@@ -107,6 +109,9 @@ export const englishMessages: TranslationMessages = {
       access_denied: "You don't have the right permissions to access this page",
       authentication_error:
         'The authentication server returned an error and your credentials could not be checked.',
+      select_all_limit_reached:
+        'There are too many elements to select them all. Only the first %{max} elements were selected.',
+      placeholder_data_warning: 'Network issue: Data refresh failed.',
     },
     navigation: {
       clear_filters: 'Clear filters',
@@ -138,6 +143,7 @@ export const englishMessages: TranslationMessages = {
       user_menu: 'Profile',
       username: 'Username',
       password: 'Password',
+      email: 'Email',
       sign_in: 'Sign in',
       sign_in_error: 'Authentication failed, please retry',
       logout: 'Logout',
