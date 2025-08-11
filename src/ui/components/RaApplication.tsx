@@ -19,7 +19,11 @@ const Wrapper: React.FC<{
 }> = ({ context, reduxStore, suspense, enableDebug = false, children }) => {
   return (
     <ApplicationContext.Provider
-      value={{ context, logger: Logger.getInstance({ enableDebug }) }}
+      value={{
+        context,
+        registry: context,
+        logger: Logger.getInstance({ enableDebug }),
+      }}
     >
       <ReduxProvider store={reduxStore}>
         <React.Suspense fallback={suspense}>{children}</React.Suspense>
