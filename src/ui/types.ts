@@ -12,7 +12,7 @@ export interface IApplication extends Omit<AdminProps, 'children'> {
 
   resources: Array<ResourceProps>;
   customRoutes?: {
-    layout?: React.ReactNode | null;
+    // layout?: React.ReactNode | null;
     routes: Array<RouteProps>;
   };
 }

@@ -44,7 +44,7 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
     ...raProps
   } = props;
 
-  const { layout, routes } = customRoutes ?? {};
+  const { routes } = customRoutes ?? {};
 
   // -------------------------------------------------------------------------------
   const adminProps = React.useMemo(() => {
@@ -75,11 +75,9 @@ export const RaApplication: React.FC<IApplication> = (props: IApplication) => {
         })}
 
         <CustomRoutes>
-          <Route element={layout}>
-            {routes?.map(resource => {
-              return <Route key={resource.id ?? resource.path} {...resource} />;
-            })}
-          </Route>
+          {routes?.map(resource => {
+            return <Route key={resource.id ?? resource.path} {...resource} />;
+          })}
         </CustomRoutes>
       </Admin>
     </Wrapper>
