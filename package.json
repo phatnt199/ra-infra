@@ -83,7 +83,6 @@
     "@loopback/context": "^8.0.2",
     "@loopback/filter": "^6.0.2",
     "@reduxjs/toolkit": "^2.8.2",
-    "dayjs": "^1.11.13",
     "ra-i18n-polyglot": "^5.4.4",
     "react-number-format": "^5.4.4",
     "react-router-dom": "^6.22.0"
@@ -96,7 +95,7 @@
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.0.11",
-    "eslint": "8.57.1",
+    "eslint": "^9.33.0",
     "husky": "^9.1.7",
     "lodash": "^4.17.21",
     "prettier": "3.6.2",

@@ -1,5 +1,4 @@
 import { getError } from '@/utilities';
-import dayjs from 'dayjs';
 
 const applicationLogger = console;
 
@@ -29,7 +28,7 @@ export class Logger implements ILogger {
   }
 
   getTimestamp() {
-    return dayjs().toISOString();
+    return new Date().toISOString();
   }
 
   toggleDebug(opts?: { state: boolean }) {
