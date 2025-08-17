@@ -28,9 +28,10 @@ export const useApplicationLogger = () => {
 };
 
 export const useInjectable = <T,>(opts: { context?: Context; key: string }) => {
-  const rs = opts ?? React.useContext(ApplicationContext);
+  const requestContext = opts?.context;
+  const applicationContext = React.useContext(ApplicationContext);
 
-  const context = rs.context;
+  const context = requestContext ?? applicationContext.context;
   if (!context) {
     throw getError({
       message: '[useInjectable] Failed to determine injectable context!',
