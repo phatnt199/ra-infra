@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { ApplicationContext } from '../context';
 import { getError } from '@/utilities';
+import { Context } from '@loopback/context';
+import { ApplicationContext } from '../context';
 
 export const useApplicationContext = () => {
   const rs = React.useContext(ApplicationContext);
@@ -24,4 +25,17 @@ export const useApplicationLogger = () => {
   }
 
   return rs.logger;
+};
+
+export const useInjectable = <T,>(opts: { context?: Context; key: string }) => {
+  const rs = opts ?? React.useContext(ApplicationContext);
+
+  const context = rs.context;
+  if (!context) {
+    throw getError({
+      message: '[useInjectable] Failed to determine injectable context!',
+    });
+  }
+
+  return context.getSync<T>(opts.key);
 };
