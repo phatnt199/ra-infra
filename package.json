@@ -20,13 +20,28 @@
     "infra",
     "reactjs framework"
   ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js",
+      "default": "./dist/config/index.js"
+    },
+    "./polyfills": {
+      "types": "./dist/config/polyfills.d.ts",
+      "import": "./dist/config/polyfills.js",
+      "default": "./dist/config/polyfills.js"
     },
     "./package.json": "./package.json"
   },
+  "sideEffects": false,
   "engines": {
     "node": ">=18"
   },
@@ -73,6 +88,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "buffer": "^6.0.3",
     "ra-i18n-polyglot": "^5.4.4",
     "react-number-format": "^5.4.4",
     "react-router-dom": "^7.8.0"
@@ -95,7 +111,8 @@
     "source-map-support": "^0.5.21",
     "tsc-alias": "^1.8.10",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite": "^6.0.0"
   },
   "peerDependencies": {
     "@loopback/context": "^8.0.2",
