@@ -11,18 +11,26 @@ import { ApplicationContext } from '../context';
 import { IApplication } from '../types';
 
 const Wrapper: React.FC<{
+  applicationName?: string;
   context: Context;
   reduxStore: Store;
   suspense: React.ReactNode;
   enableDebug?: boolean;
   children: React.ReactNode;
-}> = ({ context, reduxStore, suspense, enableDebug = false, children }) => {
+}> = ({
+  applicationName = 'RaApplication',
+  context,
+  reduxStore,
+  suspense,
+  enableDebug = false,
+  children,
+}) => {
   return (
     <ApplicationContext.Provider
       value={{
         context,
         registry: context,
-        logger: Logger.getInstance({ enableDebug }),
+        logger: Logger.getInstance({ scope: applicationName, enableDebug }),
       }}
     >
       <ReduxProvider store={reduxStore}>
