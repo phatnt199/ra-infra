@@ -33,6 +33,8 @@ import {
 } from './constants';
 
 //-----------------------------------------------------------
+export type NumberIdType = number;
+export type StringIdType = string;
 export type IdType = string | number;
 export type NullableType = undefined | null | void;
 
@@ -49,11 +51,18 @@ export type ValueOptionalExcept<T, K extends keyof T> = Pick<T, K> & Partial<Omi
  * Alias for {@link ValueOf<T>}
  */
 export type ClassProps<T> = ValueOf<T>;
+
 export type ClassType<T> = Function & { prototype: T };
 
 export type TStatusFromClass<T extends ClassType<AnyObject>> = ValueOf<
-  Omit<T, 'prototype' | 'isValid' | 'SCHEME_SET'>
+  Omit<T, 'prototype' | 'isValid' | 'SCHEME_SET' | 'TYPE_SET'>
 >;
+
+export type TStringConstValue<T extends ClassType<any>> = Extract<ValueOf<T>, string>;
+export type TNumberConstValue<T extends ClassType<any>> = Extract<ValueOf<T>, number>;
+export type TConstValue<T extends ClassType<any>> = Extract<ValueOf<T>, string | number>;
+
+export type TPrettify<T> = { [K in keyof T]: T[K] } & {};
 
 //-----------------------------------------------------------
 export type EntityRelationType = {};
