@@ -12,13 +12,16 @@ export interface ILogger {
 
 export class Logger implements ILogger {
   private static instance: Logger;
-  private isDebugEnabled: boolean;
 
-  constructor(opts?: { enableDebug: boolean }) {
+  protected scope: string;
+  protected isDebugEnabled: boolean;
+
+  constructor(opts: { scope: string; enableDebug?: boolean }) {
+    this.scope = opts.scope;
     this.isDebugEnabled = opts?.enableDebug ?? false;
   }
 
-  static getInstance(opts?: { enableDebug: boolean }): Logger {
+  static getInstance(opts: { scope: string; enableDebug?: boolean }): Logger {
     if (!this.instance) {
       this.instance = new Logger(opts);
     }
@@ -42,13 +45,13 @@ export class Logger implements ILogger {
     switch (typeof message) {
       case 'string': {
         return {
-          message: `${timestamp} - [${level}] ${message}`,
+          message: `${timestamp} - [${level}]\t[${this.scope}]${message}`,
           args,
         };
       }
       default: {
         return {
-          message: `${timestamp} - [${level}]`,
+          message: `${timestamp} - [${level}]\t[${this.scope}]`,
           args: [message, ...args],
         };
       }

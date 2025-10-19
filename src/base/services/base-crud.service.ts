@@ -21,10 +21,11 @@ export class BaseCrudService<
   protected serviceOptions: ICrudServiceOptions;
 
   constructor(opts: {
+    scope: string;
     dataProvider: IDataProvider;
     serviceOptions: ICrudServiceOptions;
   }) {
-    this.logger = Logger.getInstance();
+    this.logger = Logger.getInstance({ scope: opts.scope });
     this.dataProvider = opts.dataProvider;
     this.serviceOptions = opts.serviceOptions;
   }

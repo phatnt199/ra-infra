@@ -1,5 +1,10 @@
-import { CoreBindings, englishMessages, II18nProviderOptions } from '@/common';
-import { inject, ValueOrPromise } from '@loopback/context';
+import {
+  CoreBindings,
+  englishMessages,
+  II18nProviderOptions,
+  ValueOrPromise,
+} from '@/common';
+import { inject } from '@loopback/context';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { I18nProvider } from 'react-admin';
 import { BaseProvider } from './base.provider';
@@ -11,7 +16,7 @@ export class DefaultI18nProvider extends BaseProvider<I18nProvider> {
     @inject(CoreBindings.I18N_PROVIDER_OPTIONS)
     protected i18nProviderOptions: II18nProviderOptions,
   ) {
-    super();
+    super({ scope: DefaultI18nProvider.name });
   }
 
   override value(): ValueOrPromise<I18nProvider> {

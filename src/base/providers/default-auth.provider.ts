@@ -6,8 +6,9 @@ import {
   IAuthProviderOptions,
   IDataProvider,
   RequestMethods,
+  ValueOrPromise,
 } from '@/common';
-import { inject, ValueOrPromise } from '@loopback/context';
+import { inject } from '@loopback/context';
 import { BaseProvider } from './base.provider';
 
 export class DefaultAuthProvider<
@@ -21,7 +22,7 @@ export class DefaultAuthProvider<
     @inject(CoreBindings.DEFAULT_AUTH_SERVICE)
     protected authService: DefaultAuthService,
   ) {
-    super();
+    super({ scope: DefaultAuthProvider.name });
   }
 
   // -------------------------------------------------------------

@@ -1,10 +1,9 @@
-import { IRaApplication } from '@/common';
+import { IRaApplication, ValueOrPromise } from '@/common';
 import {
   BindingTag,
   Constructor,
   Context,
   DynamicValueProviderClass,
-  ValueOrPromise,
 } from '@loopback/context';
 
 // --------------------------------------------------------------------------------

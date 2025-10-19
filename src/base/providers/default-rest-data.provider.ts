@@ -10,10 +10,11 @@ import {
   RequestTypes,
   TRequestMethod,
   TRequestType,
+  ValueOrPromise,
 } from '@/common';
 import { DefaultNetworkRequestService } from '@/base/services';
 import { getError } from '@/utilities';
-import { inject, ValueOrPromise } from '@loopback/context';
+import { inject } from '@loopback/context';
 import omit from 'lodash/omit';
 import {
   CreateParams,
@@ -49,7 +50,7 @@ export class DefaultRestDataProvider<
     @inject(CoreBindings.REST_DATA_PROVIDER_OPTIONS)
     protected restDataProviderOptions: IRestDataProviderOptions,
   ) {
-    super();
+    super({ scope: DefaultRestDataProvider.name });
 
     this.networkService = new DefaultNetworkRequestService({
       name: 'default-application-network-service',
