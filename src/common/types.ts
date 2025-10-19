@@ -1,9 +1,4 @@
-import {
-  BindingTag,
-  Constructor,
-  DynamicValueProviderClass,
-  ValueOrPromise,
-} from '@loopback/context';
+import { BindingTag, Constructor, DynamicValueProviderClass } from '@loopback/context';
 import { Filter, Where } from '@loopback/filter';
 import {
   CreateParams,
@@ -44,6 +39,7 @@ export type NullableType = undefined | null | void;
 export type AnyType = any;
 export type AnyObject = Record<string | symbol | number, any>;
 
+export type ValueOrPromise<T> = T | Promise<T>;
 export type ValueOf<T> = T[keyof T];
 
 export type ValueOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
