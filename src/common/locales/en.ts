@@ -22,6 +22,7 @@ export const englishMessages: TranslationMessages = {
       remove_filter: 'Remove this filter',
       remove_all_filters: 'Remove all filters',
       remove: 'Remove',
+      reset: 'Reset',
       save: 'Save',
       search: 'Search',
       search_columns: 'Search columns',
@@ -161,6 +162,7 @@ export const englishMessages: TranslationMessages = {
       logged_out: 'Your session has ended, please reconnect.',
       not_authorized: "You're not authorized to access this resource.",
       application_update_available: 'A new version is available.',
+      offline: 'Không có kết nối mạng',
     },
     validation: {
       required: 'Required',

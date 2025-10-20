@@ -22,6 +22,7 @@ export const vietnameseMessages: TranslationMessages = {
       remove_filter: 'Xóa bộ lọc',
       remove_all_filters: 'Xóa tất cả bộ lọc',
       remove: 'Xóa',
+      reset: 'Thiết lập lại',
       save: 'Lưu',
       search: 'Tìm kiếm',
       search_columns: 'Chọn cột',
@@ -159,6 +160,7 @@ export const vietnameseMessages: TranslationMessages = {
       logged_out: 'Phiên làm việc của bạn đã kết thúc, vui lòng kết nối lại.',
       not_authorized: 'Bạn không được ủy quyền để truy cập tài nguyên này.',
       application_update_available: 'Có một phiên bản mới sẵn có.',
+      offline: 'Không có kết nối mạng',
     },
     validation: {
       required: 'Bắt buộc',

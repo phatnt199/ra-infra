@@ -14,31 +14,45 @@ yarn add @minimaltech/ra-infra @loopback/context @loopback/filter
 pnpm add @minimaltech/ra-infra @loopback/context @loopback/filter
 ```
 
-### Browser Setup (Required!)
+### Browser Setup (Required for Vite!)
 
-Since this package uses LoopBack 4, you need to add browser polyfills. Add this to your app entry point:
+Since this package uses LoopBack 4 (which requires Node.js APIs), you need to install and configure polyfills:
 
-```typescript
-// src/main.tsx or src/index.tsx
-import '@minimaltech/ra-infra/polyfills';
+**1. Install the polyfill plugin:**
 
-// ... rest of your app
+```bash
+npm install -D vite-plugin-node-polyfills
+# or
+yarn add -D vite-plugin-node-polyfills
+# or
+pnpm add -D vite-plugin-node-polyfills
 ```
 
-For Vite users, also update your `vite.config.ts`:
+**2. Configure your `vite.config.ts`:**
 
 ```typescript
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { getRaInfraViteConfig } from '@minimaltech/ra-infra/config';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
-  plugins: [react()],
-  ...getRaInfraViteConfig(),
+  plugins: [
+    react(),
+    nodePolyfills({
+      include: ['buffer', 'process'],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      },
+    }),
+  ],
 });
 ```
 
-**📖 [Complete Browser Setup Guide](https://github.com/phatnt199/ra-infra/wiki/Browser-Compatibility-Setup)**
+**That's it!** The plugin automatically handles all Node.js polyfills (Buffer, process, global).
+
+**📖 [Complete Vite Setup Guide](./VITE_SETUP.md)** | [Browser Compatibility](https://github.com/phatnt199/ra-infra/wiki/Browser-Compatibility-Setup)
 
 ## 📚 Documentation
 
