@@ -1,3 +1,5 @@
+[DEPRECATED] MOVED TO [Aether](https://github.com/phatnt199/aether)
+
 # @minimaltech/ra-infra
 
 Minimal Technology ReactJS Infrastructure - A React Admin framework built on LoopBack 4 for browser applications.
